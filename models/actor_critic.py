@@ -10,8 +10,8 @@ import torchvision.models as models
 from .distributions import Bernoulli, Categorical, DiagGaussian, ElementWiseCategorical
 
 
-from utils.utils_models import init
-from utils import utils_rl_agent
+from vh.data_gene.utils.utils_models import init
+from vh.data_gene.utils import utils_rl_agent
 
 import pdb
 import sys

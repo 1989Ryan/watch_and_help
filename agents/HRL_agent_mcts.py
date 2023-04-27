@@ -1,12 +1,12 @@
 import torch
-from models import actor_critic, actor_critic_hl_mcts
+from vh.data_gene.models import actor_critic, actor_critic_hl_mcts
 from gym import spaces
-from utils import utils_rl_agent
+from vh.data_gene.utils import utils_rl_agent
 import numpy as np
 import pdb
 import copy
 from . import belief
-from envs.graph_env import VhGraphEnv
+from vh.data_gene.envs.graph_env import VhGraphEnv
 
 
 import random
@@ -23,7 +23,7 @@ import ipdb
 import pickle
 
 #
-from MCTS import *
+from vh.data_gene.MCTS import *
 
 import sys
 

@@ -1,11 +1,11 @@
-from utils import utils_environment as utils
+from vh.data_gene.utils import utils_environment as utils
 import sys
 import os
 curr_dir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(f'{curr_dir}/../../virtualhome/simulation/')
 
-from environment.unity_environment import UnityEnvironment as BaseUnityEnvironment
-from evolving_graph import utils as utils_env
+from vh.vh_sim.simulation.environment.unity_environment import UnityEnvironment as BaseUnityEnvironment
+from vh.vh_sim.simulation.evolving_graph import utils as utils_env
 import pdb
 import numpy as np
 import copy
@@ -191,7 +191,7 @@ class UnityEnvironment(BaseUnityEnvironment):
             if self.recording_options['recording']:
                 success, message = self.comm.render_script(script_list,
                                                            recording=True,
-                                                           gen_vid=False,
+                                                        #    gen_vid=False,
                                                            skip_animation=False,
                                                            camera_mode=self.recording_options['cameras'],
                                                            file_name_prefix='task_{}'.format(self.task_id),
@@ -200,7 +200,7 @@ class UnityEnvironment(BaseUnityEnvironment):
                 success, message = self.comm.render_script(script_list,
                                                            recording=False,
                                                            image_synthesis=[],
-                                                           gen_vid=False,
+                                                        #    gen_vid=False,
                                                            skip_animation=True)
             if not success:
                 print("NO SUCCESS")

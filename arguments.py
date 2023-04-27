@@ -285,7 +285,7 @@ def get_args():
     # Exec args
     parser.add_argument(
         '--executable_file', type=str,
-        default='../executable/linux_exec_v3.x86_64')
+        default='./vh/vh_sim/simulation/unity_simulator/v2.2.5/linux_exec.v2.2.5_beta.x86_64')
 
 
     parser.add_argument(
@@ -294,7 +294,7 @@ def get_args():
 
 
     parser.add_argument(
-        '--display', type=str, default="2")
+        '--display', type=str, default="1")
 
     parser.add_argument(
         '--env-name',

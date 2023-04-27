@@ -68,8 +68,8 @@ class ArenaMP(object):
                 opponent_subgoal = None
                 if agent.recursive:
                     opponent_subgoal = self.agents[1 - it].last_subgoal
-                
-                dict_actions[it], dict_info[it] = agent.get_action(obs[it], goal_spec, opponent_subgoal)
+                state_graph = self.env.get_graph()
+                dict_actions[it], dict_info[it] = agent.get_action(state_graph, goal_spec, opponent_subgoal)
                 
             elif 'RL' in agent.agent_type:
                 if 'MCTS' in agent.agent_type or 'Random' in agent.agent_type:

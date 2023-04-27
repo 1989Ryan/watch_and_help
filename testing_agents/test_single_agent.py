@@ -7,11 +7,11 @@ import random
 import numpy as np
 from pathlib import Path
 
-from envs.unity_environment import UnityEnvironment
-from agents import MCTS_agent
-from arguments import get_args
-from algos.arena_mp2 import ArenaMP
-from utils import utils_goals
+from vh.data_gene.envs.unity_environment import UnityEnvironment
+from vh.data_gene.agents import MCTS_agent
+from vh.data_gene.arguments import get_args
+from vh.data_gene.algos.arena_mp2 import ArenaMP
+from vh.data_gene.utils import utils_goals
 
 
 
@@ -23,7 +23,7 @@ if __name__ == '__main__':
     num_tries = 5
     args.max_episode_length = 250
     args.num_per_apartment = 20
-    args.dataset_path = './dataset/test_env_set_help.pik'
+    args.dataset_path = './vh/dataset/env_task_set_20_simple_test_unseen_task.pik'
     args.mode = 'hp'
     env_task_set = pickle.load(open(args.dataset_path, 'rb'))
 
@@ -62,8 +62,8 @@ if __name__ == '__main__':
 
     args_common = dict(recursive=False,
                          max_episode_length=5,
-                         num_simulation=100,
-                         max_rollout_steps=5,
+                         num_simulation=1000,
+                         max_rollout_steps=50,
                          c_init=0.1,
                          c_base=1000000,
                          num_samples=1,

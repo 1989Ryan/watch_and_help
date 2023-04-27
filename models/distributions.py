@@ -7,7 +7,7 @@ import torch.nn.functional as F
 import sys
 import os
 
-from utils.utils_models import AddBias, init
+from vh.data_gene.utils.utils_models import AddBias, init
 
 """
 Modify standard PyTorch distributions so they are compatible with this code.

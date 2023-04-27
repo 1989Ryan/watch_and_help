@@ -11,13 +11,13 @@ import pickle
 
 
 from . import belief
-from envs.graph_env import VhGraphEnv
+from vh.data_gene.envs.graph_env import VhGraphEnv
 #
-from MCTS import *
+from vh.data_gene.MCTS import *
 
 import sys
 sys.path.append('..')
-from utils import utils_environment as utils_env
+from vh.data_gene.utils import utils_environment as utils_env
 
 
 def find_heuristic(agent_id, char_index, unsatisfied, env_graph, simulator, object_target):
@@ -449,7 +449,8 @@ class MCTS_agent:
 
     def get_action(self, obs, goal_spec, opponent_subgoal=None):
 
-        self.sample_belief(obs)
+        # self.sample_belief(obs)
+        self.previous_belief_graph = obs
         self.sim_env.reset(self.previous_belief_graph, {0: goal_spec, 1: goal_spec})
 
         last_action = self.last_action
@@ -467,7 +468,8 @@ class MCTS_agent:
         # ipdb.set_trace()
         if len(plan) > 0:
             action = plan[0]
-            action = action.replace('[walk]', '[walktowards]')
+            # action = action.replace('[walk]', '[walktowards]')
+            action = action.replace('[walktowards]', '[walk]')
         else:
             action = None
         if self.logging:
