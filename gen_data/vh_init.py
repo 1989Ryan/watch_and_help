@@ -14,7 +14,7 @@ home_path = '../../'
 sys.path.append(f'{curr_dir}/../../virtualhome')
 sys.path.append(f'{curr_dir}/..')
 
-from simulation.unity_simulator import comm_unity
+from vh.vh_sim.simulation.unity_simulator import comm_unity
 from init_goal_setter.init_goal_base import SetInitialGoal
 from init_goal_setter.tasks import Task
 
@@ -27,12 +27,15 @@ parser.add_argument('--seed', type=int, default=10, help='Seed for the apartment
 
 parser.add_argument('--task', type=str, default='setup_table', help='Task name')
 parser.add_argument('--apt_str', type=str, default='0,1,2,4,5', help='The apartments where we will generate the data')
-parser.add_argument('--port', type=str, default='8092', help='Task name')
-parser.add_argument('--display', type=int, default=0, help='Task name')
+parser.add_argument('--port', type=str, default='8093', help='Task name')
+parser.add_argument('--display', type=int, default=1, help='Task name')
 parser.add_argument('--mode', type=str, default='full', choices=['simple', 'full'], help='Task name')
+parser.add_argument('--usage', type=str, default='train', choices=['test', 'train'], help='Train or Test')
 parser.add_argument('--use-editor', action='store_true', default=False, help='Use unity editor')
+parser.add_argument('--unseen-item', action='store_true', default=False, help='Use unity editor')
+parser.add_argument('--unseen-apartment', action='store_true', default=False, help='Use unity editor')
 parser.add_argument('--exec_file', type=str,
-                    default='../executable/linux_exec.x86_64',
+                    default='./vh/vh_sim/simulation/unity_simulator/v2.2.5/linux_exec.v2.2.5_beta.x86_64',
                     help='Use unity editor')
 
 if __name__ == "__main__":
@@ -42,9 +45,12 @@ if __name__ == "__main__":
     else:
         rand = random.Random(args.seed)
 
-
-    with open(f'{curr_dir}/data/init_pool.json') as file:
-        init_pool = json.load(file)
+    if args.unseen_item:
+        with open(f'{curr_dir}/data/init_pool_unseen.json') as file:
+            init_pool = json.load(file)
+    else:
+        with open(f'{curr_dir}/data/init_pool.json') as file:
+            init_pool = json.load(file)
     # comm = comm_unity.UnityCommunication()
     if args.use_editor:
         comm = comm_unity.UnityCommunication()
@@ -54,7 +60,7 @@ if __name__ == "__main__":
                                              file_name=args.exec_file,
                                              no_graphics=True,
                                              logging=False,
-                                             x_display=args.display)
+                                             x_display=str(args.display))
     comm.reset()
 
     ## -------------------------------------------------------------
@@ -65,24 +71,36 @@ if __name__ == "__main__":
     ## -------------------------------------------------------------
     ## gen graph
     ## -------------------------------------------------------------
-    task_names = {1: ["setup_table", "clean_table", "put_fridge", "prepare_food", "read_book", "watch_tv"],
+    task_names = {1: ["setup_table", "clean_table", "put_fridge", "prepare_food", "put_microwave"],
                   2: ["setup_table", "clean_table", "put_dishwasher", "unload_dishwasher", "put_fridge", "prepare_food",
-                      "read_book", "watch_tv"],
+                      "put_microwave","setup_table_put_fridge", "setup_table_put_dishwasher", 
+                      "prepare_food_put_dishwasher", "put_fridge_put_dishwasher"],
                   3: ["setup_table", "clean_table", "put_dishwasher", "unload_dishwasher", "put_fridge", "prepare_food",
-                      "read_book", "watch_tv"],
+                      "put_microwave","setup_table_put_fridge", "setup_table_put_dishwasher", 
+                      "prepare_food_put_dishwasher", "put_fridge_put_dishwasher"],
                   4: ["setup_table", "clean_table", "put_dishwasher", "unload_dishwasher", "put_fridge", "prepare_food",
-                      "read_book", "watch_tv"],
+                      "put_microwave","setup_table_put_fridge", "setup_table_put_dishwasher", 
+                      "prepare_food_put_dishwasher", "put_fridge_put_dishwasher"],
                   5: ["setup_table", "clean_table", "put_dishwasher", "unload_dishwasher", "put_fridge",
-                      "prepare_food"],
-                  6: ["setup_table", "clean_table", "put_fridge", "prepare_food", "read_book", "watch_tv"],
+                      "prepare_food","setup_table_put_fridge", "setup_table_put_dishwasher", 
+                      "prepare_food_put_dishwasher", "put_fridge_put_dishwasher"],
+                  6: ["setup_table", "clean_table", "put_fridge", "prepare_food", "put_microwave"],
                   7: ["setup_table", "clean_table", "put_dishwasher", "unload_dishwasher", "put_fridge", "prepare_food",
-                      "read_book", "watch_tv"]}
+                      "put_microwave","setup_table_put_fridge", "setup_table_put_dishwasher", 
+                      "prepare_food_put_dishwasher", "put_fridge_put_dishwasher"]}
 
     success_init_graph = []
 
-    apartment_ids = [int(apt_id) for apt_id in args.apt_str.split(',')]
+    # apartment_ids = [int(apt_id) for apt_id in args.apt_str.split(',')]
+    if args.unseen_apartment:
+        apartment_ids = [1, 6]
+    else:
+        apartment_ids = [2, 3, 4]
     if args.task == 'all':
-        tasks = ['setup_table', 'put_fridge', 'prepare_food', 'put_dishwasher', 'read_book']
+        tasks = ['setup_table', 'put_fridge', 'prepare_food', 'put_dishwasher', 'unload_dishwasher', 'put_microwave']
+        if args.mode == 'full':
+            tasks += ["setup_table_put_fridge", "setup_table_put_dishwasher", 
+                      "prepare_food_put_dishwasher", "put_fridge_put_dishwasher"]
     else:
         tasks = [args.task]
     num_per_apartment = args.num_per_apartment
@@ -137,10 +155,10 @@ if __name__ == "__main__":
                 ## -------------------------------------------------------------
                 ## setup goal based on currect environment
                 ## -------------------------------------------------------------
-                set_init_goal = SetInitialGoal(obj_position, class_name_size, init_pool, task_name, same_room=False, rand=rand)
+                set_init_goal = SetInitialGoal(obj_position, class_name_size, init_pool, task_name, same_room=False, rand=rand, mode=args.mode)
                 init_graph, env_goal, success_setup = getattr(Task, task_name)(set_init_goal, graph)
-                if env_goal is None:
-                    pdb.set_trace()
+                # if env_goal is None:
+                #     pdb.set_trace()
                 if success_setup:
                     # If all objects were well added
                     success, message = comm.expand_scene(init_graph, transfer_transform=False)
@@ -194,7 +212,17 @@ if __name__ == "__main__":
                             s, init_graph = comm.environment_graph()
                             print('final s:', s)
                             if s:
-                                for subgoal in env_goal[task_name]:
+                                subgoals = []
+                                if task_name in ["setup_table_put_fridge", "setup_table_put_dishwasher", 
+                                                "prepare_food_put_dishwasher", "put_fridge_put_dishwasher"]:
+                                    names = task_name.split('_')
+                                    names_ = [names[0] + '_' + names[1], names[2] + '_' + names[3]]
+                                    for name in names_:
+                                        if name in env_goal:
+                                            subgoals.append(env_goal[name])
+                                else:
+                                    subgoals = env_goal[task_name]
+                                for subgoal in subgoals:
                                     for k, v in subgoal.items():
                                         elements = k.split('_')
                                         # print(elements)
@@ -216,8 +244,8 @@ if __name__ == "__main__":
                                                            'init_graph': init_graph,
                                                            'original_graph': original_graph,
                                                            'goal': env_goal})
-                else:
-                    pdb.set_trace()
+                # else:
+                #     continue
                 print('apartment: %d: success %d over %d (total: %d)' % (apartment, count_success, i + 1, num_test))
                 if count_success >= num_per_apartment:
                     break
@@ -226,29 +254,46 @@ if __name__ == "__main__":
     data = success_init_graph
     env_task_set = []
 
-    for task in ['setup_table', 'put_fridge', 'put_dishwasher', 'prepare_food', 'read_book']:
+    # for task in ['setup_table', 'put_fridge', 'put_dishwasher', 'prepare_food', 'read_book']:
         
-        for task_id, problem_setup in enumerate(data):
-            env_id = problem_setup['apartment'] - 1
-            task_name = problem_setup['task_name']
-            init_graph = problem_setup['init_graph']
+    for task_id, problem_setup in enumerate(data):
+        env_id = problem_setup['apartment'] - 1
+        task_name = problem_setup['task_name']
+        init_graph = problem_setup['init_graph']
+        goal = {}
+        if task_name in ["setup_table_put_fridge", "setup_table_put_dishwasher", 
+                    "prepare_food_put_dishwasher", "put_fridge_put_dishwasher"]:
+            names = task_name.split('_')
+            names_ = [names[0] + '_' + names[1], names[2] + '_' + names[3]]
+            for name in names_:
+                if name in problem_setup['goal']:
+                    goal.update(problem_setup['goal'][name])
+        else:
             goal = problem_setup['goal'][task_name]
 
-            goals = utils_goals.convert_goal_spec(task_name, goal, init_graph,
-                                                  exclude=['cutleryknife'])
-            print('env_id:', env_id)
-            print('task_name:', task_name)
-            print('goals:', goals)
+        goals = utils_goals.convert_goal_spec(task_name, goal, init_graph,)
+                                                # exclude=['cutleryknife'])
+        print('env_id:', env_id)
+        print('task_name:', task_name)
+        print('goals:', goals)
 
-            task_goal = {}
-            for i in range(2):
-                task_goal[i] = goals
+        task_goal = {}
+        for i in range(2):
+            task_goal[i] = goals
 
-            env_task_set.append({'task_id': task_id, 'task_name': task_name, 'env_id': env_id, 'init_graph': init_graph,
-                                 'task_goal': task_goal,
-                                 'level': 0, 'init_rooms': rand.sample(['kitchen', 'bedroom', 'livingroom', 'bathroom'], 2)})
-
-    pickle.dump(env_task_set, open(f'{curr_dir}/dataset/env_task_set_{args.num_per_apartment}_{args.mode}.pik', 'wb'))
+        env_task_set.append({'task_id': task_id, 'task_name': task_name, 'env_id': env_id, 'init_graph': init_graph,
+                                'task_goal': task_goal,
+                                'level': 0, 'init_rooms': rand.sample(['kitchen', 'bedroom', 'livingroom', 'bathroom'], 2)})
+    if args.usage == 'train':
+        pickle.dump(env_task_set, open(f'./vh/dataset/env_task_set_{args.num_per_apartment}_{args.mode}.pik', 'wb'))
+    else:
+        if args.unseen_item:
+            pickle.dump(env_task_set, open(f'./vh/dataset/env_task_set_{args.num_per_apartment}_{args.mode}_unseen_item.pik', 'wb'))
+        elif args.unseen_apartment:
+            pickle.dump(env_task_set, open(f'./vh/dataset/env_task_set_{args.num_per_apartment}_{args.mode}_unseen_apartment.pik', 'wb'))
+        else:
+            pickle.dump(env_task_set, open(f'./vh/dataset/env_task_set_{args.num_per_apartment}_{args.mode}_seen.pik', 'wb'))
+    # pickle.dump(env_task_set, open(f'{curr_dir}/dataset/env_task_set_{args.num_per_apartment}_{args.mode}.pik', 'wb'))
 
 
 

@@ -20,9 +20,9 @@ from vh.data_gene.utils import utils_goals
 if __name__ == '__main__':
     args = get_args()
 
-    num_tries = 5
+    num_tries = 10
     args.max_episode_length = 50
-    args.num_per_apartment = 20
+    args.num_per_apartment = 5
     # args.dataset_path = './vh/dataset/env_task_set_50_simple_train_seen_task_seen_env.pik'
     # args.mode = 'simple'
     env_task_set = pickle.load(open(args.dataset_path, 'rb'))
