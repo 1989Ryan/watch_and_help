@@ -447,10 +447,10 @@ class MCTS_agent:
         print('---')
 
 
-    def get_action(self, obs, goal_spec, opponent_subgoal=None):
+    def get_action(self, graph, obs, goal_spec, opponent_subgoal=None):
 
         # self.sample_belief(obs)
-        self.previous_belief_graph = obs
+        self.previous_belief_graph = graph
         self.sim_env.reset(self.previous_belief_graph, {0: goal_spec, 1: goal_spec})
 
         last_action = self.last_action
@@ -481,7 +481,7 @@ class MCTS_agent:
             }
             if self.logging_graphs:
                 info.update(
-                    {'obs': obs['nodes']})
+                    {'obs': obs["nodes"]})
         else:
             info = {}
 

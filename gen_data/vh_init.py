@@ -219,7 +219,7 @@ if __name__ == "__main__":
                                     names_ = [names[0] + '_' + names[1], names[2] + '_' + names[3]]
                                     for name in names_:
                                         if name in env_goal:
-                                            subgoals.append(env_goal[name])
+                                            subgoals += env_goal[name]
                                 else:
                                     subgoals = env_goal[task_name]
                                 for subgoal in subgoals:
@@ -260,14 +260,14 @@ if __name__ == "__main__":
         env_id = problem_setup['apartment'] - 1
         task_name = problem_setup['task_name']
         init_graph = problem_setup['init_graph']
-        goal = {}
+        goal = []
         if task_name in ["setup_table_put_fridge", "setup_table_put_dishwasher", 
                     "prepare_food_put_dishwasher", "put_fridge_put_dishwasher"]:
             names = task_name.split('_')
             names_ = [names[0] + '_' + names[1], names[2] + '_' + names[3]]
             for name in names_:
                 if name in problem_setup['goal']:
-                    goal.update(problem_setup['goal'][name])
+                    goal += problem_setup['goal'][name]
         else:
             goal = problem_setup['goal'][task_name]
 
