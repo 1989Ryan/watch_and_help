@@ -71,23 +71,32 @@ if __name__ == "__main__":
     ## -------------------------------------------------------------
     ## gen graph
     ## -------------------------------------------------------------
-    task_names = {1: ["setup_table", "clean_table", "put_fridge", "prepare_food", "put_microwave"],
-                  2: ["setup_table", "clean_table", "put_dishwasher", "unload_dishwasher", "put_fridge", "prepare_food",
-                      "put_microwave","setup_table_put_fridge", "setup_table_put_dishwasher", 
-                      "prepare_food_put_dishwasher", "put_fridge_put_dishwasher"],
-                  3: ["setup_table", "clean_table", "put_dishwasher", "unload_dishwasher", "put_fridge", "prepare_food",
-                      "put_microwave","setup_table_put_fridge", "setup_table_put_dishwasher", 
-                      "prepare_food_put_dishwasher", "put_fridge_put_dishwasher"],
-                  4: ["setup_table", "clean_table", "put_dishwasher", "unload_dishwasher", "put_fridge", "prepare_food",
-                      "put_microwave","setup_table_put_fridge", "setup_table_put_dishwasher", 
-                      "prepare_food_put_dishwasher", "put_fridge_put_dishwasher"],
-                  5: ["setup_table", "clean_table", "put_dishwasher", "unload_dishwasher", "put_fridge",
-                      "prepare_food","setup_table_put_fridge", "setup_table_put_dishwasher", 
-                      "prepare_food_put_dishwasher", "put_fridge_put_dishwasher"],
-                  6: ["setup_table", "clean_table", "put_fridge", "prepare_food", "put_microwave"],
-                  7: ["setup_table", "clean_table", "put_dishwasher", "unload_dishwasher", "put_fridge", "prepare_food",
-                      "put_microwave","setup_table_put_fridge", "setup_table_put_dishwasher", 
-                      "prepare_food_put_dishwasher", "put_fridge_put_dishwasher"]}
+
+    all_tasks = [
+        "setup_table", "put_dishwasher", "put_microwave", "put_bathroom_cabinet", "put_fridge", 'put_kitchencabinet',
+        "prepare_drinks", "prepare_snack", "prepare_wash", "prepare_food", "setup_table_prepare_food", 
+        "setup_table_put_microwave", "setup_table_put_fridge", "setup_table_put_dishwasher", 
+        "prepare_food_put_dishwasher", "put_fridge_put_bathroom_cabinet", "put_fridge_put_dishwasher", 
+        "put_dishwasher_prepare_snack", "prepare_wash_put_fridge", 
+    ]
+
+    # task_names = {1: ["setup_table", "clean_table", "put_fridge", "prepare_food", "put_microwave"],
+    #               2: ["setup_table", "clean_table", "put_dishwasher", "unload_dishwasher", "put_fridge", "prepare_food",
+    #                   "put_microwave","setup_table_put_fridge", "setup_table_put_dishwasher", "put_bathroom_cabinet",
+    #                   "prepare_food_put_dishwasher", "put_fridge_put_dishwasher", "put_dishwasher_prepare_snack", " prepare_wash_put_fridge"],
+    #               3: ["setup_table", "clean_table", "put_dishwasher", "unload_dishwasher", "put_fridge", "prepare_food",
+    #                   "put_microwave","setup_table_put_fridge", "setup_table_put_dishwasher",  "put_bathroom_cabinet",
+    #                   "prepare_food_put_dishwasher", "put_fridge_put_dishwasher"],
+    #               4: ["setup_table", "clean_table", "put_dishwasher", "unload_dishwasher", "put_fridge", "prepare_food",
+    #                   "put_microwave","setup_table_put_fridge", "setup_table_put_dishwasher",  "put_bathroom_cabinet",
+    #                   "prepare_food_put_dishwasher", "put_fridge_put_dishwasher"],
+    #               5: ["setup_table", "clean_table", "put_dishwasher", "unload_dishwasher", "put_fridge",
+    #                   "prepare_food","setup_table_put_fridge", "setup_table_put_dishwasher",  "put_bathroom_cabinet",
+    #                   "prepare_food_put_dishwasher", "put_fridge_put_dishwasher"],
+    #               6: ["setup_table", "clean_table", "put_fridge", "prepare_food", "put_microwave"],
+    #               7: ["setup_table", "clean_table", "put_dishwasher", "unload_dishwasher", "put_fridge", "prepare_food",
+    #                   "put_microwave","setup_table_put_fridge", "setup_table_put_dishwasher",  "put_bathroom_cabinet",
+    #                   "prepare_food_put_dishwasher", "put_fridge_put_dishwasher"]}
 
     success_init_graph = []
 
@@ -97,10 +106,14 @@ if __name__ == "__main__":
     else:
         apartment_ids = [2, 3, 4]
     if args.task == 'all':
-        tasks = ['setup_table', 'put_fridge', 'prepare_food', 'put_dishwasher', 'unload_dishwasher', 'put_microwave']
+        tasks = ["setup_table", "put_dishwasher", "put_microwave", "put_bathroom_cabinet", "put_fridge",
+        "prepare_drinks", "prepare_snack", "prepare_wash", "prepare_food","put_kitchencabinet"]
         if args.mode == 'full':
-            tasks += ["setup_table_put_fridge", "setup_table_put_dishwasher", 
-                      "prepare_food_put_dishwasher", "put_fridge_put_dishwasher"]
+            tasks += ["setup_table_prepare_food", "setup_table_put_microwave", "setup_table_put_fridge", 
+        "setup_table_put_dishwasher", "prepare_food_put_dishwasher", ]
+    elif args.task == 'unseen_comp':
+        tasks = ["put_fridge_put_bathroom_cabinet", "put_fridge_put_dishwasher", 
+                 "put_dishwasher_prepare_snack", "prepare_wash_put_fridge"]
     else:
         tasks = [args.task]
     num_per_apartment = args.num_per_apartment
@@ -110,13 +123,12 @@ if __name__ == "__main__":
         for apartment in apartment_ids:
             print('apartment', apartment)
 
-            if task not in task_names[apartment + 1]: continue
+            if task not in all_tasks: continue
             # if apartment != 4: continue
             # apartment = 3
 
             with open(f'{curr_dir}/data/object_info%s.json' % (apartment + 1), 'r') as file:
                 obj_position = json.load(file)
-
             # pdb.set_trace()bathroomcounter
 
             # filtering out certain locations
@@ -137,7 +149,7 @@ if __name__ == "__main__":
                                  pos[0] == 'ON' and pos[1] in \
                                  (['cabinet', 'coffeetable', 'bench'] + ([] if apartment == 2 else ['kitchentable']))]
                 obj_position[obj] = positions
-            print(obj_position['cutleryfork'])
+            # print(obj_position['cutleryfork'])
 
             num_test = 100000
             count_success = 0
@@ -173,7 +185,6 @@ if __name__ == "__main__":
                             goal_objs += [int(list(goal.keys())[0].split('_')[-1]) for goal in goals if
                                           list(goal.keys())[0].split('_')[-1] not in ['book', 'remotecontrol']]
                             goal_names += [list(goal.keys())[0].split('_')[1] for goal in goals]
-                        print(message)
                         obj_names = [obj.split('.')[0] for obj in message['unplaced']]
                         obj_ids = [int(obj.split('.')[1]) for obj in message['unplaced']]
                         id2node = {node['id']: node for node in init_graph['nodes']}
@@ -213,8 +224,10 @@ if __name__ == "__main__":
                             print('final s:', s)
                             if s:
                                 subgoals = []
-                                if task_name in ["setup_table_put_fridge", "setup_table_put_dishwasher", 
-                                                "prepare_food_put_dishwasher", "put_fridge_put_dishwasher"]:
+                                if task_name in [ "setup_table_prepare_food", 
+                                    "setup_table_put_microwave", "setup_table_put_fridge", "setup_table_put_dishwasher", 
+                                    "prepare_food_put_dishwasher", "put_fridge_put_bathroom_cabinet", "put_fridge_put_dishwasher", 
+                                    "put_dishwasher_prepare_snack", "prepare_wash_put_fridge", ]:
                                     names = task_name.split('_')
                                     names_ = [names[0] + '_' + names[1], names[2] + '_' + names[3]]
                                     for name in names_:
@@ -261,17 +274,22 @@ if __name__ == "__main__":
         task_name = problem_setup['task_name']
         init_graph = problem_setup['init_graph']
         goal = []
-        if task_name in ["setup_table_put_fridge", "setup_table_put_dishwasher", 
-                    "prepare_food_put_dishwasher", "put_fridge_put_dishwasher"]:
+        if task_name in [ "setup_table_prepare_food", 
+                                    "setup_table_put_microwave", "setup_table_put_fridge", "setup_table_put_dishwasher", 
+                                    "prepare_food_put_dishwasher", "put_fridge_put_bathroom_cabinet", "put_fridge_put_dishwasher", 
+                                    "put_dishwasher_prepare_snack", "prepare_wash_put_fridge", ]:
             names = task_name.split('_')
-            names_ = [names[0] + '_' + names[1], names[2] + '_' + names[3]]
+            if len(names) == 4:
+                names_ = [names[0] + '_' + names[1], names[2] + '_' + names[3]]
+            else:
+                names_ = [names[0] + '_' + names[1], names[2] + '_' + names[3] + '_' + names[4]]
             for name in names_:
                 if name in problem_setup['goal']:
                     goal += problem_setup['goal'][name]
+            goals = utils_goals.convert_goal_spec(names_, goal, init_graph,)
         else:
             goal = problem_setup['goal'][task_name]
-
-        goals = utils_goals.convert_goal_spec(task_name, goal, init_graph,)
+            goals = utils_goals.convert_goal_spec(task_name, goal, init_graph,)
                                                 # exclude=['cutleryknife'])
         print('env_id:', env_id)
         print('task_name:', task_name)
@@ -291,6 +309,8 @@ if __name__ == "__main__":
             pickle.dump(env_task_set, open(f'./vh/dataset/env_task_set_{args.num_per_apartment}_{args.mode}_unseen_item.pik', 'wb'))
         elif args.unseen_apartment:
             pickle.dump(env_task_set, open(f'./vh/dataset/env_task_set_{args.num_per_apartment}_{args.mode}_unseen_apartment.pik', 'wb'))
+        elif args.task == 'unseen_comp':
+            pickle.dump(env_task_set, open(f'./vh/dataset/env_task_set_{args.num_per_apartment}_{args.mode}_unseen_composition.pik', 'wb'))
         else:
             pickle.dump(env_task_set, open(f'./vh/dataset/env_task_set_{args.num_per_apartment}_{args.mode}_seen.pik', 'wb'))
     # pickle.dump(env_task_set, open(f'{curr_dir}/dataset/env_task_set_{args.num_per_apartment}_{args.mode}.pik', 'wb'))

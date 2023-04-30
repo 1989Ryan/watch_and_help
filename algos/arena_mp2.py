@@ -56,12 +56,12 @@ class ArenaMP(object):
         dict_actions, dict_info = {}, {}
         op_subgoal = {0: None, 1: None}
         # pdb.set_trace()
-
         for it, agent in enumerate(self.agents):
             if self.task_goal is None:
                 goal_spec = self.env.get_goal(self.env.task_goal[it], self.env.agent_goals[it])
 
             else:
+                print(self.task_goal[it])
                 goal_spec = self.env.get_goal(self.task_goal[it], self.env.agent_goals[it])
             
             if agent.agent_type in ['MCTS', 'Random']:

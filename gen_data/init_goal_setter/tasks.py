@@ -237,7 +237,104 @@ class Task:
         # fridge_position_pool = init_goal_manager.obj_position['fridge']
         # init_goal_manager.add_obj(graph, 'fridge', num_fridge, fridge_position_pool)
 
-        fridge_ids = [node['id'] for node in graph['nodes'] if 'microwave' in node['class_name']]
+        microwave_ids = [node['id'] for node in graph['nodes'] if 'microwave' in node['class_name']]
+        microwave_id = init_goal_manager.rand.choice(microwave_ids)
+
+        ## remove objects in fridge
+        objs_in_fridge = [edge['from_id'] for edge in graph['edges'] if
+                          (edge['to_id'] == microwave_id) and (edge['relation_type'] == 'INSIDE')]
+        graph = init_goal_manager.remove_obj(graph, objs_in_fridge)
+
+        if init_goal_manager.same_room:
+            objs_in_room = init_goal_manager.get_obj_room(microwave_id)
+        else:
+            objs_in_room = None
+
+        except_position_ids = [node['id'] for node in graph['nodes'] if ('floor' in node['class_name'])]
+        except_position_ids.append(microwave_id)
+
+        for k, v in init_goal_manager.goal.items():
+            obj_ids = [node['id'] for node in graph['nodes'] if k in node['class_name']]
+            graph = init_goal_manager.remove_obj(graph, obj_ids)
+
+            num_obj = init_goal_manager.rand.randint(v, init_goal_manager.init_pool[k]['env_max_num'] + 1)  # random select objects >= goal
+            init_goal_manager.object_id_count, graph, success = init_goal_manager.add_obj(graph, k, num_obj, init_goal_manager.object_id_count,
+                                                       objs_in_room=objs_in_room, except_position=except_position_ids,
+                                                       goal_obj=True)
+            if not success:
+                return None, None, False
+
+        if start:
+            init_goal_manager.object_id_count, graph = init_goal_manager.setup_other_objs(graph, init_goal_manager.object_id_count, objs_in_room=objs_in_room,
+                                                                except_position=except_position_ids)
+
+        ## get goal
+        env_goal = {'put_microwave': []}
+        for k, v in init_goal_manager.goal.items():
+            env_goal['put_microwave'].append({'put_{}_inside_{}'.format(k, microwave_id): v})
+        return graph, env_goal, True
+
+
+    @staticmethod
+    def put_bathroom_cabinet(init_goal_manager, graph, start=True):
+        ## setup fridge
+        # max_num_fridge = 4
+        # num_fridge = init_goal_manager.rand.randint(1, max_num_fridge)
+
+        # fridge_ids = [node['id'] for node in graph['nodes'] if 'fridge' in node['class_name']]
+        # init_goal_manager.remove_obj(graph, fridge_ids)
+        # fridge_position_pool = init_goal_manager.obj_position['fridge']
+        # init_goal_manager.add_obj(graph, 'fridge', num_fridge, fridge_position_pool)
+
+        bathroomcabinet_ids = [node['id'] for node in graph['nodes'] if 'bathroomcabinet' in node['class_name']]
+        bathroomcabinet_id = init_goal_manager.rand.choice(bathroomcabinet_ids)
+
+        ## remove objects in fridge
+        objs_in_bathroomcabinet = [edge['from_id'] for edge in graph['edges'] if
+                          (edge['to_id'] == bathroomcabinet_id) and (edge['relation_type'] == 'INSIDE')]
+        graph = init_goal_manager.remove_obj(graph, objs_in_bathroomcabinet)
+
+        if init_goal_manager.same_room:
+            objs_in_room = init_goal_manager.get_obj_room(bathroomcabinet_id)
+        else:
+            objs_in_room = None
+
+        except_position_ids = [node['id'] for node in graph['nodes'] if ('floor' in node['class_name'])]
+        except_position_ids.append(bathroomcabinet_id)
+
+        for k, v in init_goal_manager.goal.items():
+            obj_ids = [node['id'] for node in graph['nodes'] if k in node['class_name']]
+            graph = init_goal_manager.remove_obj(graph, obj_ids)
+
+            num_obj = init_goal_manager.rand.randint(v, init_goal_manager.init_pool[k]['env_max_num'] + 1)  # random select objects >= goal
+            init_goal_manager.object_id_count, graph, success = init_goal_manager.add_obj(graph, k, num_obj, init_goal_manager.object_id_count,
+                                                       objs_in_room=objs_in_room, except_position=except_position_ids,
+                                                       goal_obj=True)
+            if not success:
+                return None, None, False
+
+        if start:
+            init_goal_manager.object_id_count, graph = init_goal_manager.setup_other_objs(graph, init_goal_manager.object_id_count, objs_in_room=objs_in_room,
+                                                                except_position=except_position_ids)
+
+        ## get goal
+        env_goal = {'put_bathroom_cabinet': []}
+        for k, v in init_goal_manager.goal.items():
+            env_goal['put_bathroom_cabinet'].append({'put_{}_inside_{}'.format(k, bathroomcabinet_id): v})
+        return graph, env_goal, True
+
+    @staticmethod
+    def put_kitchencabinet(init_goal_manager, graph, start=True):
+        ## setup fridge
+        # max_num_fridge = 4
+        # num_fridge = init_goal_manager.rand.randint(1, max_num_fridge)
+
+        # fridge_ids = [node['id'] for node in graph['nodes'] if 'fridge' in node['class_name']]
+        # init_goal_manager.remove_obj(graph, fridge_ids)
+        # fridge_position_pool = init_goal_manager.obj_position['fridge']
+        # init_goal_manager.add_obj(graph, 'fridge', num_fridge, fridge_position_pool)
+
+        fridge_ids = [node['id'] for node in graph['nodes'] if 'kitchencabinet' in node['class_name']]
         fridge_id = init_goal_manager.rand.choice(fridge_ids)
 
         ## remove objects in fridge
@@ -269,11 +366,10 @@ class Task:
                                                                 except_position=except_position_ids)
 
         ## get goal
-        env_goal = {'put_microwave': []}
+        env_goal = {'put_kitchencabinet': []}
         for k, v in init_goal_manager.goal.items():
-            env_goal['put_microwave'].append({'put_{}_inside_{}'.format(k, fridge_id): v})
+            env_goal['put_kitchencabinet'].append({'put_{}_inside_{}'.format(k, fridge_id): v})
         return graph, env_goal, True
-
 
     @staticmethod
     def put_fridge(init_goal_manager, graph, start=True):
@@ -323,6 +419,182 @@ class Task:
             env_goal['put_fridge'].append({'put_{}_inside_{}'.format(k, fridge_id): v})
         return graph, env_goal, True
 
+    @staticmethod
+    def prepare_drinks(init_goal_manager, graph, start=True):
+        # max_num_table = 4
+        # num_table = init_goal_manager.rand.randint(1, max_num_table)
+
+        # table_ids = [node['id'] for node in graph['nodes'] if 'table' in node['class_name']]
+        # init_goal_manager.remove_obj(graph, table_ids)
+        # table_position_pool = init_goal_manager.obj_position['table']
+        # init_goal_manager.add_obj(graph, 'table', num_table, table_position_pool)
+
+        # table_ids = [node['id'] for node in graph['nodes'] if ('coffeetable' in node['class_name']) or ('kitchentable' in node['class_name'])]
+        table_ids = [node['id'] for node in graph['nodes'] if ('kitchentable' in node['class_name'])]
+        table_id = init_goal_manager.rand.choice(table_ids)
+
+        ## remove objects on table
+        id2node = {node['id']: node for node in graph['nodes']}
+        objs_on_table = [edge['from_id'] for edge in graph['edges'] if
+                         (edge['to_id'] == table_id) and (edge['relation_type'] == 'ON') and \
+                         id2node[edge['from_id']]['class_name'] in ['plate', 'cutleryfork', 'waterglass', 'wineglass',
+                                                                    'book', 'poundcake', 'cutleryknife']]
+
+        graph = init_goal_manager.remove_obj(graph, objs_on_table)
+        # objs_on_table = [edge['from_id'] for edge in graph['edges'] if (edge['to_id']==table_id) and (edge['relation_type']=='ON')]
+        # graph = init_goal_manager.remove_obj(graph, objs_on_table)
+
+        if init_goal_manager.same_room:
+            objs_in_room = init_goal_manager.get_obj_room(table_id)
+        else:
+            objs_in_room = None
+
+        except_position_ids = [node['id'] for node in graph['nodes'] if ('floor' in node['class_name'])]
+        except_position_ids.append(table_id)
+
+        for k, v in init_goal_manager.goal.items():
+            obj_ids = [node['id'] for node in graph['nodes'] if k in node['class_name']]
+            graph = init_goal_manager.remove_obj(graph, obj_ids)
+
+            num_obj = init_goal_manager.rand.randint(v, init_goal_manager.init_pool[k]['env_max_num'] + 1)  # random select objects >= goal
+            init_goal_manager.object_id_count, graph, success = init_goal_manager.add_obj(graph, k, num_obj, init_goal_manager.object_id_count,
+                                                       objs_in_room=objs_in_room, except_position=except_position_ids,
+                                                       goal_obj=True)
+            if not success:
+                return None, None, False
+
+        if start:
+            init_goal_manager.object_id_count, graph = init_goal_manager.setup_other_objs(graph, init_goal_manager.object_id_count, objs_in_room=objs_in_room,
+                                                                except_position=except_position_ids)
+
+        ## get goal
+        env_goal = {'prepare_drinks': []}
+        for k, v in init_goal_manager.goal.items():
+            env_goal['prepare_drinks'].append({'put_{}_on_{}'.format(k, table_id): v})
+        return graph, env_goal, True
+
+    @staticmethod
+    def prepare_snack(init_goal_manager, graph, start=True):
+        # max_num_table = 4
+        # num_table = init_goal_manager.rand.randint(1, max_num_table)
+
+        # table_ids = [node['id'] for node in graph['nodes'] if 'table' in node['class_name']]
+        # init_goal_manager.remove_obj(graph, table_ids)
+        # table_position_pool = init_goal_manager.obj_position['table']
+        # init_goal_manager.add_obj(graph, 'table', num_table, table_position_pool)
+
+        id2node = {node['id']: node for node in graph['nodes']}
+        # table_ids = [node['id'] for node in graph['nodes'] if ('coffeetable' in node['class_name']) or ('kitchentable' in node['class_name'])]
+        table_ids = [node['id'] for node in graph['nodes'] if ('coffeetable' in node['class_name'])]
+        for table_id in table_ids:
+            for edge in graph['edges']:
+                if edge['from_id'] == table_id and id2node[edge['to_id']]['class_name'] == 'livingroom':
+                    break
+
+        if len(table_ids) == 0:
+            table_ids = [node['id'] for node in graph['nodes'] if ('kitchentable' in node['class_name'])]
+            table_id = init_goal_manager.rand.choice(table_ids) 
+            objs_on_table = [edge['from_id'] for edge in graph['edges'] if
+                         (edge['to_id'] == table_id) and (edge['relation_type'] == 'ON') 
+                            and id2node[edge['from_id']]['class_name'] in ['plate', 'cutleryfork', 'waterglass', 'wineglass',
+                                                                    'book', 'poundcake', 'cutleryknife']
+                        ]
+        else:
+            objs_on_table = [edge['from_id'] for edge in graph['edges'] if
+                         (edge['to_id'] == table_id) and (edge['relation_type'] == 'ON') 
+                            # and id2node[edge['from_id']]['class_name'] in ['plate', 'cutleryfork', 'waterglass', 'wineglass',
+                                                                    # 'book', 'poundcake', 'cutleryknife']
+                        ]
+
+        ## remove objects on table
+
+
+        graph = init_goal_manager.remove_obj(graph, objs_on_table)
+        # objs_on_table = [edge['from_id'] for edge in graph['edges'] if (edge['to_id']==table_id) and (edge['relation_type']=='ON')]
+        # graph = init_goal_manager.remove_obj(graph, objs_on_table)
+
+        if init_goal_manager.same_room:
+            objs_in_room = init_goal_manager.get_obj_room(table_id)
+        else:
+            objs_in_room = None
+
+        except_position_ids = [node['id'] for node in graph['nodes'] if ('floor' in node['class_name'])]
+        except_position_ids.append(table_id)
+
+        for k, v in init_goal_manager.goal.items():
+            obj_ids = [node['id'] for node in graph['nodes'] if k in node['class_name']]
+            graph = init_goal_manager.remove_obj(graph, obj_ids)
+
+            num_obj = init_goal_manager.rand.randint(v, init_goal_manager.init_pool[k]['env_max_num'] + 1)  # random select objects >= goal
+            init_goal_manager.object_id_count, graph, success = init_goal_manager.add_obj(graph, k, num_obj, init_goal_manager.object_id_count,
+                                                       objs_in_room=objs_in_room, except_position=except_position_ids,
+                                                       goal_obj=True)
+            if not success:
+                return None, None, False
+
+        if start:
+            init_goal_manager.object_id_count, graph = init_goal_manager.setup_other_objs(graph, init_goal_manager.object_id_count, objs_in_room=objs_in_room,
+                                                                except_position=except_position_ids)
+
+        ## get goal
+        env_goal = {'prepare_snack': []}
+        for k, v in init_goal_manager.goal.items():
+            env_goal['prepare_snack'].append({'put_{}_on_{}'.format(k, table_id): v})
+        return graph, env_goal, True
+
+    @staticmethod
+    def prepare_wash(init_goal_manager, graph, start=True):
+        # max_num_table = 4
+        # num_table = init_goal_manager.rand.randint(1, max_num_table)
+
+        # table_ids = [node['id'] for node in graph['nodes'] if 'table' in node['class_name']]
+        # init_goal_manager.remove_obj(graph, table_ids)
+        # table_position_pool = init_goal_manager.obj_position['table']
+        # init_goal_manager.add_obj(graph, 'table', num_table, table_position_pool)
+
+        # table_ids = [node['id'] for node in graph['nodes'] if ('coffeetable' in node['class_name']) or ('kitchentable' in node['class_name'])]
+        table_ids = [node['id'] for node in graph['nodes'] if ('bathroomcounter' in node['class_name'])]
+        table_id = init_goal_manager.rand.choice(table_ids)
+
+        ## remove objects on table
+        id2node = {node['id']: node for node in graph['nodes']}
+        objs_on_table = [edge['from_id'] for edge in graph['edges'] if
+                         (edge['to_id'] == table_id) and (edge['relation_type'] == 'ON') and \
+                         id2node[edge['from_id']]['class_name'] in ['plate', 'cutleryfork', 'waterglass', 'wineglass',
+                                                                    'book', 'poundcake', 'cutleryknife']]
+
+        graph = init_goal_manager.remove_obj(graph, objs_on_table)
+        # objs_on_table = [edge['from_id'] for edge in graph['edges'] if (edge['to_id']==table_id) and (edge['relation_type']=='ON')]
+        # graph = init_goal_manager.remove_obj(graph, objs_on_table)
+
+        if init_goal_manager.same_room:
+            objs_in_room = init_goal_manager.get_obj_room(table_id)
+        else:
+            objs_in_room = None
+
+        except_position_ids = [node['id'] for node in graph['nodes'] if ('floor' in node['class_name'])]
+        except_position_ids.append(table_id)
+
+        for k, v in init_goal_manager.goal.items():
+            obj_ids = [node['id'] for node in graph['nodes'] if k in node['class_name']]
+            graph = init_goal_manager.remove_obj(graph, obj_ids)
+
+            num_obj = init_goal_manager.rand.randint(v, init_goal_manager.init_pool[k]['env_max_num'] + 1)  # random select objects >= goal
+            init_goal_manager.object_id_count, graph, success = init_goal_manager.add_obj(graph, k, num_obj, init_goal_manager.object_id_count,
+                                                       objs_in_room=objs_in_room, except_position=except_position_ids,
+                                                       goal_obj=True)
+            if not success:
+                return None, None, False
+
+        if start:
+            init_goal_manager.object_id_count, graph = init_goal_manager.setup_other_objs(graph, init_goal_manager.object_id_count, objs_in_room=objs_in_room,
+                                                                except_position=except_position_ids)
+
+        ## get goal
+        env_goal = {'prepare_wash': []}
+        for k, v in init_goal_manager.goal.items():
+            env_goal['prepare_wash'].append({'put_{}_on_{}'.format(k, table_id): v})
+        return graph, env_goal, True
 
     @staticmethod
     def prepare_food(init_goal_manager, graph, start=True):
@@ -627,6 +899,25 @@ class Task:
 
 
     @staticmethod
+    def setup_table_put_microwave(init_goal_manager, graph):
+        all_goal = init_goal_manager.goal
+        init_goal_manager.goal = {obj_name: value for obj_name, value in all_goal.items() if
+                                  obj_name in init_goal_manager.init_pool_tasks['setup_table'].keys()}
+        graph, env_goal1, success = Task.setup_table(init_goal_manager, graph)
+        # pdb.set_trace()
+        if not success:
+            return None, None, False
+        init_goal_manager.goal = {obj_name: value for obj_name, value in all_goal.items() if
+                                  obj_name in init_goal_manager.init_pool_tasks['put_microwave'].keys()}
+        graph, env_goal2, success = Task.put_microwave(init_goal_manager, graph, start=False)
+        init_goal_manager.goal = all_goal
+        if not success:
+            # pdb.set_trace()
+            return None, None, False
+        env_goal1.update(env_goal2)
+        return graph, env_goal1, success
+
+    @staticmethod
     def setup_table_put_fridge(init_goal_manager, graph):
         all_goal = init_goal_manager.goal
         init_goal_manager.goal = {obj_name: value for obj_name, value in all_goal.items() if
@@ -683,6 +974,24 @@ class Task:
         return graph, env_goal1, success
 
     @staticmethod
+    def put_fridge_put_bathroom_cabinet(init_goal_manager, graph):
+        all_goal = init_goal_manager.goal
+        init_goal_manager.goal = {obj_name: value for obj_name, value in all_goal.items() if
+                                  obj_name in init_goal_manager.init_pool_tasks['put_fridge'].keys()}
+        graph, env_goal1, success = Task.put_fridge(init_goal_manager, graph)
+        if not success:
+            return None, None, False
+        init_goal_manager.goal = {obj_name: value for obj_name, value in all_goal.items() if
+                                  obj_name in init_goal_manager.init_pool_tasks['put_bathroom_cabinet'].keys()}
+        graph, env_goal2, success = Task.put_bathroom_cabinet(init_goal_manager, graph, start=False)
+        init_goal_manager.goal = all_goal
+
+        if not success:
+            return None, None, False
+        env_goal1.update(env_goal2)
+        return graph, env_goal1, success
+
+    @staticmethod
     def put_fridge_put_dishwasher(init_goal_manager, graph):
         all_goal = init_goal_manager.goal
         init_goal_manager.goal = {obj_name: value for obj_name, value in all_goal.items() if
@@ -701,7 +1010,7 @@ class Task:
         return graph, env_goal1, success
 
     @staticmethod
-    def put_dishwasher_read_book(init_goal_manager, graph):
+    def put_dishwasher_prepare_snack(init_goal_manager, graph):
         all_goal = init_goal_manager.goal
         init_goal_manager.goal = {obj_name: value for obj_name, value in all_goal.items() if
                                   obj_name in init_goal_manager.init_pool_tasks['put_dishwasher'].keys()}
@@ -709,8 +1018,26 @@ class Task:
         if not success:
             return None, None, False
         init_goal_manager.goal = {obj_name: value for obj_name, value in all_goal.items() if
-                                  obj_name in init_goal_manager.init_pool_tasks['read_book'].keys()}
-        graph, env_goal2, success = Task.read_book(init_goal_manager, graph, start=False)
+                                  obj_name in init_goal_manager.init_pool_tasks['prepare_snack'].keys()}
+        graph, env_goal2, success = Task.prepare_snack(init_goal_manager, graph, start=False)
+        init_goal_manager.goal = all_goal
+
+        if not success:
+            return None, None, False
+        env_goal1.update(env_goal2)
+        return graph, env_goal1, success
+
+    @staticmethod
+    def prepare_wash_put_fridge(init_goal_manager, graph):
+        all_goal = init_goal_manager.goal
+        init_goal_manager.goal = {obj_name: value for obj_name, value in all_goal.items() if
+                                  obj_name in init_goal_manager.init_pool_tasks['prepare_wash'].keys()}
+        graph, env_goal1, success = Task.prepare_wash(init_goal_manager, graph)
+        if not success:
+            return None, None, False
+        init_goal_manager.goal = {obj_name: value for obj_name, value in all_goal.items() if
+                                  obj_name in init_goal_manager.init_pool_tasks['put_fridge'].keys()}
+        graph, env_goal2, success = Task.put_fridge(init_goal_manager, graph, start=False)
         init_goal_manager.goal = all_goal
 
         if not success:

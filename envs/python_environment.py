@@ -1,17 +1,20 @@
 from .base_environment import BaseEnvironment
-from utils import utils_environment as utils
 
 import sys
 import os
-
-
-
 curr_dir = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(f'{curr_dir}/../')
+from utils import utils_environment as utils
+
+
+
+
 
 sys.path.append(f'{curr_dir}/../../virtualhome/')
 sys.path.append(f'{curr_dir}/../../vh_mdp/')
 
-from vh_graph.envs import belief, vh_env
+from vh.data_gene.envs.graph_env import VhGraphEnv
+from vh.data_gene.agents.belief import Belief
 import pdb
 import random
 import numpy as np
@@ -66,7 +69,7 @@ class PythonEnvironment(BaseEnvironment):
         self.offset_cameras = None
 
 
-        self.env = vh_env.VhGraphEnv(n_chars=self.num_agents)
+        self.env = VhGraphEnv(n_chars=self.num_agents)
 
     def reward(self):
         reward = 0.

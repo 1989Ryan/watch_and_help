@@ -84,11 +84,11 @@ def inside_not_trans(graph):
     nodes_without_parent = list(set(nodes_not_rooms) - set(parent_for_node.keys()))
     nodes_without_parent = [node for node in nodes_without_parent if node not in grabbed_objs]
     graph['edges'] = [edge for edge in graph['edges'] if not (edge['from_id'] in objects_to_check and edge['relation_type'] == 'ON')]
-    if len(nodes_without_parent) > 0:
-        for nd in nodes_without_parent:
-            print(id2node[nd])
-        ipdb.set_trace()
-        raise Exception
+    # if len(nodes_without_parent) > 0:
+    #     for nd in nodes_without_parent:
+    #         print(id2node[nd])
+    #     ipdb.set_trace()
+    #     raise Exception
     return graph
 
 

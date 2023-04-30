@@ -1,27 +1,9 @@
 {
-    "objects_inside": ["bathroom_cabinet", "kitchencabinet", "bathroom_counter", "cabinet", "fridge", "oven", "dishwasher", "microwave", "stove", "bathroomcabinet"],
-    "objects_surface": ["bed",
-                         "bookshelf",
-                         "cabinet",
-                         "coffeetable",
-                         "cuttingboard",
-                         "floor",
-                         "fryingpan",
-                         "kitchencounter",
-                         "kitchentable",
-                         "nightstand",
-                         "sofa",
-                         "stove"],
-    "objects_switchonoff": ["microwave",
-                            "stove",
-                            "tv",
-                            "lightswitch",
-                            "computer",
-                            "coffeemaker",
-                            "faucet"],
+    "objects_inside": ["stove"],
+    "objects_surface": [],
     "objects_grab": ["alcohol",
                      "apple",
-                     "banana",
+                     "bananas",
                      "barsoap",
                      "bellpepper",
                      "boardgame",
@@ -34,6 +16,7 @@
                      "carrot",
                      "cellphone",
                      "cereal",
+                     "chair",
                      "chicken",
                      "chinesefood",
                      "chips",
@@ -87,6 +70,7 @@
                      "pudding",
                      "radio",
                      "remotecontrol",
+                     "rug",
                      "salad",
                      "salmon",
                      "slippers",
@@ -99,19 +83,13 @@
                      "towel",
                      "towelrack",
                      "toy",
+                     "wallphone",
+                     "wallpictureframe",
                      "washingsponge",
                      "waterglass",
                      "whippedcream",
                      "wine",
-                     "wineglass"],
+                     "wineglass"]
 
-    "relavent_objects": ["bathroom_cabinet", "kitchencabinet", "bathroom_counter", "kitchencounterdrawer", "cabinet", "fridge", "oven", "dishwasher", "microwave", "stove", "bathroomcabinet",
-                    "bathroomcounter", "bed", "bench", "bookshelf", "chair", "coffeetable", "desk", "kitchencounter", "kitchentable", "sofa",
-                    "plate", "waterglass", "wineglass", "cutleryfork", "cupcake", "juice", "pancake", "poundcake", "wine", "pudding", "apple", "coffeepot",
-                    "kitchen", "livingroom", "bedroom", "bathroom"]
 }
-
-
-
-
 

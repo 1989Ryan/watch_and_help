@@ -6,13 +6,6 @@
         "cutleryfork": {"min_num":0, "max_num":2, "env_max_num": 2}
     },
 
-    "clean_table":
-    {
-        "plate": {"min_num":0, "max_num":2, "env_max_num": 2},
-        "wineglass": {"min_num":0, "max_num":2, "env_max_num": 2},
-        "cutleryfork": {"min_num":0, "max_num":2, "env_max_num": 2}
-    },
-
     "put_dishwasher":
     {
         "dishbowl": {"min_num":0, "max_num":2, "env_max_num": 2},
@@ -20,25 +13,49 @@
         "cutleryknife": {"min_num":0, "max_num":2, "env_max_num": 2}
     },
 
-    "unload_dishwasher":
+    "put_bathroom_cabinet":
     {
-        "dishbowl": {"min_num":0, "max_num":2, "env_max_num": 2},
-        "waterglass": {"min_num":0, "max_num":2, "env_max_num": 2},
-        "cutleryknife": {"min_num":0, "max_num":2, "env_max_num": 2}
+        "toothbrush": {"min_num":0, "max_num":1, "env_max_num": 1},
+        "toothpaste": {"min_num":0, "max_num":1, "env_max_num": 1},
+        "washingsponge": {"min_num":0, "max_num":1, "env_max_num": 1}
     },
 
-
-    "put_fridge":
+    "prepare_wash":
     {
-        "cupcake": {"min_num":0, "max_num":2, "env_max_num": 2},
-        "juice": {"min_num":0, "max_num":1, "env_max_num": 1},
-        "pancake": {"min_num":0, "max_num":1, "env_max_num": 1},
+        "toothbrush": {"min_num":0, "max_num":1, "env_max_num": 1},
+        "toothpaste": {"min_num":0, "max_num":1, "env_max_num": 1},
+        "toiletpaper": {"min_num":0, "max_num":1, "env_max_num": 1},
+        "towel": {"min_num":0, "max_num":1, "env_max_num": 1},
+        "washingsponge": {"min_num":0, "max_num":1, "env_max_num": 1}
+    },
+
+    "prepare_snack":
+    {
+        "chips": {"min_num":0, "max_num":2, "env_max_num": 2},
+        "cereal": {"min_num":0, "max_num":1, "env_max_num": 1},
+        "crackers": {"min_num":0, "max_num":2, "env_max_num": 2}
+    },
+
+    "prepare_drinks":
+    {
         "wine": {"min_num":0, "max_num":1, "env_max_num": 1},
-        "apple": {"min_num":0, "max_num":2, "env_max_num": 2}   
+        "juice": {"min_num":0, "max_num":1, "env_max_num": 1},
+        "milk": {"min_num":0, "max_num":1, "env_max_num": 1},
+        "milkshake": {"min_num":0, "max_num":1, "env_max_num": 1}
     },
 
     "put_microwave":
     {
+        "chicken": {"min_num":0, "max_num":1, "env_max_num": 1},
+        "salmon": {"min_num":0, "max_num":1, "env_max_num": 1},
+        "milk": {"min_num":0, "max_num":1, "env_max_num": 1},
+        "poundcake": {"min_num":0, "max_num":1, "env_max_num": 1}
+    },
+
+    "put_fridge":
+    {
+        "wine": {"min_num":0, "max_num":1, "env_max_num": 1},
+        "juice": {"min_num":0, "max_num":1, "env_max_num": 1},
         "pie": {"min_num":0, "max_num":1, "env_max_num": 1},
         "salmon": {"min_num":0, "max_num":1, "env_max_num": 1},
         "poundcake": {"min_num":0, "max_num":1, "env_max_num": 1}
@@ -48,11 +65,20 @@
     {
         "cupcake": {"min_num":0, "max_num":2, "env_max_num": 2},
         "pancake": {"min_num":0, "max_num":1, "env_max_num": 1},
+        "chicken": {"min_num":0, "max_num":1, "env_max_num": 1},
         "pudding": {"min_num":0, "max_num":2, "env_max_num": 2},
         "apple": {"min_num":0, "max_num":2, "env_max_num": 2},
         "coffeepot": {"min_num":0, "max_num":1, "env_max_num": 1}
-    }
+    },
 
+    "put_kitchencabinet":
+    {
+        "dishbowl": {"min_num":0, "max_num":2, "env_max_num": 2},
+        "wine": {"min_num":0, "max_num":1, "env_max_num": 1},
+        "chips": {"min_num":0, "max_num":2, "env_max_num": 2},
+        "cereal": {"min_num":0, "max_num":1, "env_max_num": 1},
+        "crackers": {"min_num":0, "max_num":2, "env_max_num": 2}
+    }
     
 }
 

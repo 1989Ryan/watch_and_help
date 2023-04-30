@@ -20,7 +20,7 @@ from vh.data_gene.utils import utils_goals
 if __name__ == '__main__':
     args = get_args()
 
-    num_tries = 10
+    num_tries = 5
     args.max_episode_length = 50
     args.num_per_apartment = 5
     # args.dataset_path = './vh/dataset/env_task_set_50_simple_train_seen_task_seen_env.pik'
@@ -34,7 +34,7 @@ if __name__ == '__main__':
 
     executable_args = {
                     'file_name': args.executable_file,
-                    'x_display': 0,
+                    'x_display': "1",
                     'no_graphics': True
     }
 
@@ -91,22 +91,24 @@ if __name__ == '__main__':
         
         for episode_id in episode_ids:
 
-            curr_log_file_name = args.record_dir + '/logs_agent_{}_{}_{}.pik'.format(
+            curr_log_file_name = args.record_dir + '/expert_traj_{}_{}_{}.pik'.format(
             env_task_set[episode_id]['task_id'],
             env_task_set[episode_id]['task_name'],
             iter_id)
-
-        
-
+            if env_task_set[episode_id]['task_name'] not in [
+                "setup_table", "put_dishwasher", "put_microwave", "put_bathroom_cabinet", "put_fridge", "put_kitchencabinet",
+                "prepare_drinks", "prepare_snack", "prepare_wash", "prepare_food", "setup_table_prepare_food", 
+                "setup_table_put_microwave", "setup_table_put_fridge", "setup_table_put_dishwasher", 
+                "prepare_food_put_dishwasher", "put_fridge_put_bathroom_cabinet", "put_fridge_put_dishwasher", 
+                "put_dishwasher_prepare_snack", "prepare_wash_put_fridge", 
+            ]:
+                continue 
             if os.path.isfile(curr_log_file_name):
                 with open(curr_log_file_name, 'rb') as fd:
                     file_data = pickle.load(fd)
-                S[episode_id][current_tried] = file_data['finished']
-                L[episode_id][current_tried] = max(len(file_data['action'][0]), len(file_data['action'][1]))
-                test_results[episode_id] = {'S': S[episode_id],
-                                            'L': L[episode_id]}
                 continue
 
+            print(env_task_set[episode_id]['task_name'])
             print('episode:', episode_id)
 
             for it_agent, agent in enumerate(arena.agents):
@@ -128,12 +130,13 @@ if __name__ == '__main__':
                 is_finished = 1 if success else 0
 
                 Path(args.record_dir).mkdir(parents=True, exist_ok=True)
-                log_file_name = args.record_dir + '/expert_traj_{}_{}_{}.pik'.format(saved_info['task_id'], saved_info['task_name'], current_tried)
-                if len(saved_info['obs']) > 0:
-                    pickle.dump(saved_info, open(log_file_name, 'wb'))
-                else:
-                    with open(log_file_name, 'w+') as f:
-                        f.write(json.dumps(saved_info, indent=4))
+                if success:
+                    log_file_name = args.record_dir + '/expert_traj_{}_{}_{}.pik'.format(saved_info['task_id'], saved_info['task_name'], current_tried)
+                    if len(saved_info['obs']) > 0:
+                        pickle.dump(saved_info, open(log_file_name, 'wb'))
+                    else:
+                        with open(log_file_name, 'w+') as f:
+                            f.write(json.dumps(saved_info, indent=4))
             except:
                 ipdb.set_trace()
                 arena.reset_env()

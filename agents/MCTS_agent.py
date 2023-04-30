@@ -357,6 +357,7 @@ def get_plan(sample_id, root_action, root_node, env, mcts, nb_steps, goal_spec, 
         'sit': sit_heuristic,
         'turnOn': turnOn_heuristic
     }
+    # print(last_subgoal)
     next_root, plan, subgoals = mcts.run(curr_node,
                                nb_steps,
                                heuristic_dict,
@@ -448,7 +449,6 @@ class MCTS_agent:
 
 
     def get_action(self, graph, obs, goal_spec, opponent_subgoal=None):
-
         # self.sample_belief(obs)
         self.previous_belief_graph = graph
         self.sim_env.reset(self.previous_belief_graph, {0: goal_spec, 1: goal_spec})

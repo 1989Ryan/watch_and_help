@@ -46,8 +46,8 @@ class SetInitialGoal:
         k=1 if self.mode=='simple' else 3
         k1 = random.choice([1, 2])
         k2 = 3 - k1
-        if self.task_name in ['setup_table', 'put_fridge', 'prepare_food', 
-            'put_dishwasher', 'unload_dishwasher', 'clean_table', 'put_microwave']:
+        if self.task_name in ["setup_table", "put_dishwasher", "put_microwave", "put_bathroom_cabinet", "put_fridge", "put_kitchencabinet", 
+        "prepare_drinks", "prepare_snack", "prepare_wash", "prepare_food"]:
             self.init_pool = dict(self.rand.sample(list(self.init_pool_tasks[self.task_name].items()), k=k))
             print(self.init_pool)
         elif self.task_name == 'setup_table_prepare_food':
@@ -64,8 +64,21 @@ class SetInitialGoal:
         #     self.init_pool =  copy.deepcopy(self.init_pool_tasks["setup_table"])
         #     self.init_pool.update(self.init_pool_tasks["watch_tv"])
 
-        elif self.task_name == 'setup_table_put_fridge':
 
+        #  "setup_table_prepare_food", 
+        # "setup_table_put_microwave", "setup_table_put_fridge", "setup_table_put_dishwasher", 
+        # "prepare_food_put_dishwasher", "put_fridge_put_bathroom_cabinet", "put_fridge_put_dishwasher", 
+        # "put_dishwasher_prepare_snack", "prepare_wash_put_fridge",
+
+        elif self.task_name == 'setup_table_prepare_food':
+            self.init_pool = copy.deepcopy(dict(self.rand.sample(list(self.init_pool_tasks["setup_table"].items()), k=k1)))
+            self.init_pool.update(dict(self.rand.sample(list(self.init_pool_tasks["prepare_food"].items()), k=k2)))
+
+        elif self.task_name == 'setup_table_put_microwave':
+            self.init_pool = copy.deepcopy(dict(self.rand.sample(list(self.init_pool_tasks["setup_table"].items()), k=k1)))
+            self.init_pool.update(dict(self.rand.sample(list(self.init_pool_tasks["put_microwave"].items()), k=k2)))
+
+        elif self.task_name == 'setup_table_put_fridge':
             self.init_pool = copy.deepcopy(dict(self.rand.sample(list(self.init_pool_tasks["setup_table"].items()), k=k1)))
             self.init_pool.update(dict(self.rand.sample(list(self.init_pool_tasks["put_fridge"].items()), k=k2)))
             # self.init_pool =  copy.deepcopy(self.init_pool_tasks["setup_table"])
@@ -79,13 +92,22 @@ class SetInitialGoal:
             self.init_pool = copy.deepcopy(dict(self.rand.sample(list(self.init_pool_tasks["prepare_food"].items()), k=k1)))
             self.init_pool.update(dict(self.rand.sample(list(self.init_pool_tasks["put_dishwasher"].items()), k=k2)))
 
+        elif self.task_name == 'put_fridge_put_bathroom_cabinet':
+            self.init_pool = copy.deepcopy(dict(self.rand.sample(list(self.init_pool_tasks["put_fridge"].items()), k=k1)))
+            self.init_pool.update(dict(self.rand.sample(list(self.init_pool_tasks["put_bathroom_cabinet"].items()), k=k2)))
+            print(self.init_pool)
         elif self.task_name == 'put_fridge_put_dishwasher':
             self.init_pool = copy.deepcopy(dict(self.rand.sample(list(self.init_pool_tasks["put_fridge"].items()), k=k1)))
             self.init_pool.update(dict(self.rand.sample(list(self.init_pool_tasks["put_dishwasher"].items()), k=k2)))
 
-        # elif self.task_name == 'put_dishwasher_read_book':
-        #     self.init_pool =  copy.deepcopy(self.init_pool_tasks["put_dishwasher"])
-        #     self.init_pool.update(self.init_pool_tasks["read_book"])
+        elif self.task_name == 'put_dishwasher_prepare_snack':
+            self.init_pool = copy.deepcopy(dict(self.rand.sample(list(self.init_pool_tasks["put_dishwasher"].items()), k=k1)))
+            self.init_pool.update(dict(self.rand.sample(list(self.init_pool_tasks["prepare_snack"].items()), k=k2)))
+        
+        elif self.task_name == 'prepare_wash_put_fridge':
+            self.init_pool = copy.deepcopy(dict(self.rand.sample(list(self.init_pool_tasks["prepare_wash"].items()), k=k1)))
+            self.init_pool.update(dict(self.rand.sample(list(self.init_pool_tasks["put_fridge"].items()), k=k2)))
+
 
         ## make sure the goal is not empty
         deb = '''
@@ -127,10 +149,10 @@ class SetInitialGoal:
                 # if 2 <= count <= 6 and self.task_name not in ['clean_table', 'unload_dishwasher'] or 3 <= count <= 6:
                 #     break
                 if self.mode == "simple":
-                    if count >= 1:
+                    if 2 >= count >= 1:
                         break
                 else:
-                    if count >= 3:
+                    if 4 >= count >= 3:
                         break
 
     def get_obj_room(self, obj_id):
@@ -211,7 +233,9 @@ class SetInitialGoal:
         # success, message = comm.expand_scene(graph_copy)
         # print(success, message)
         # pdb.set_trace()
-        if ('setup_table' in self.task_name) or ('put_dishwasher' in self.task_name) or ('put_fridge' in self.task_name) or ('prepare_food' in self.task_name):
+        if ('setup_table' in self.task_name) or ('put_dishwasher' in self.task_name) \
+            or ('put_fridge' in self.task_name) or ('prepare_food' in self.task_name) \
+            or ('put_microwave' in self.task_name) or ('clean_table' in self.task_name) :
             curr_task_name = list(env_goal.keys())[0]
             for goal in env_goal[curr_task_name]:
                 # print(self.object_id_count)

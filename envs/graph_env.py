@@ -7,7 +7,7 @@ import os
 import sys
 
 curr_dir = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(f'{curr_dir}/../../virtualhome/simulation/')
+sys.path.append(f'{curr_dir}/../../vh_sim/simulation/')
 
 from evolving_graph.utils import load_graph_dict, graph_dict_helper
 from evolving_graph.execution import ScriptExecutor, ExecutionInfo
@@ -265,7 +265,7 @@ class VhGraphEnv():
 
     # TODO: Now the random function doesn't align with the manually set seed
     # task_goals_n is a list of list that represents the goals of every agent
-    def reset(self, state, task_goals_n):
+    def reset(self, state, task_goals_n = None):
         ############ State ############
 
         state = self._remove_house_obj(state)

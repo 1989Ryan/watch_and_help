@@ -6,13 +6,6 @@
         "cutleryknife": {"min_num":0, "max_num":2, "env_max_num": 2}
     },
 
-    "clean_table":
-    {
-        "dishbowl": {"min_num":0, "max_num":2, "env_max_num": 2},
-        "waterglass": {"min_num":0, "max_num":2, "env_max_num": 2},
-        "cutleryknife": {"min_num":0, "max_num":2, "env_max_num": 2}
-    },
-
     "put_dishwasher":
     {
         "plate": {"min_num":0, "max_num":2, "env_max_num": 2},
@@ -20,40 +13,39 @@
         "cutleryfork": {"min_num":0, "max_num":2, "env_max_num": 2}
     },
 
-    "unload_dishwasher":
-    {
-        "plate": {"min_num":0, "max_num":2, "env_max_num": 2},
-        "wineglass": {"min_num":0, "max_num":2, "env_max_num": 2},
-        "cutleryfork": {"min_num":0, "max_num":2, "env_max_num": 2}
-    },
-
-
-    "put_fridge":
-    {
-        "pie": {"min_num":0, "max_num":1, "env_max_num": 1},
-        "salmon": {"min_num":0, "max_num":1, "env_max_num": 1},
-        "poundcake": {"min_num":0, "max_num":1, "env_max_num": 1},
-        "pudding": {"min_num":0, "max_num":2, "env_max_num": 2},
-        "coffeepot": {"min_num":0, "max_num":1, "env_max_num": 1}
-    },
-
     "put_microwave":
     {
         "milk": {"min_num":0, "max_num":1, "env_max_num": 1},
+        "cupcake": {"min_num":0, "max_num":2, "env_max_num": 2},
+        "pancake": {"min_num":0, "max_num":1, "env_max_num": 1},
+        "wine": {"min_num":0, "max_num":1, "env_max_num": 1},
+        "juice": {"min_num":0, "max_num":1, "env_max_num": 1}
+    },
+
+    "put_fridge":
+    {
         "chicken": {"min_num":0, "max_num":1, "env_max_num": 1},
-        "pancake": {"min_num":0, "max_num":1, "env_max_num": 1}
+        "milk": {"min_num":0, "max_num":1, "env_max_num": 1},
+        "cupcake": {"min_num":0, "max_num":2, "env_max_num": 2},
+        "pancake": {"min_num":0, "max_num":1, "env_max_num": 1},
+        "pudding": {"min_num":0, "max_num":2, "env_max_num": 2},
+        "apple": {"min_num":0, "max_num":2, "env_max_num": 2},
+        "coffeepot": {"min_num":0, "max_num":1, "env_max_num": 1}
+
     },
 
     "prepare_food":
-    { 
+    {
+        "chicken": {"min_num":0, "max_num":1, "env_max_num": 1},
+        "milk": {"min_num":0, "max_num":1, "env_max_num": 1},
         "pie": {"min_num":0, "max_num":1, "env_max_num": 1},
         "salmon": {"min_num":0, "max_num":1, "env_max_num": 1},
-        "juice": {"min_num":0, "max_num":1, "env_max_num": 1},
-        "poundcake": {"min_num":0, "max_num":1, "env_max_num": 1},
-        "wine": {"min_num":0, "max_num":1, "env_max_num": 1}
+        "poundcake": {"min_num":0, "max_num":1, "env_max_num": 1}
     }
 
-
+    
 }
+
+
 
 

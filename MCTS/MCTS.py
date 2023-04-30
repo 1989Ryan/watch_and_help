@@ -64,11 +64,11 @@ class MCTS:
         # subgoals = [sg for sg in subgoals if sg[0] != opponent_subgoal] # avoid repreating
         #print(curr_state_tmp['edges'])
 
-        if self.verbose:
-            print('satisfied:', satisfied)
-            print('unsatisfied:', unsatisfied)
-            print('subgoals:', subgoals)
-            print('last_subgoal:', last_subgoal)
+        # if self.verbose:
+        # print('satisfied:', satisfied)
+        # print('unsatisfied:', unsatisfied)
+        # print('subgoals:', subgoals)
+        # print('last_subgoal:', last_subgoal)
 
         """TODO: check predicates other than ON"""
         id2node = {node['id']: node for node in curr_state_tmp['nodes']}
@@ -101,7 +101,7 @@ class MCTS:
         if self.last_opened is None: # add close & opened containers
             for edge in curr_state_tmp['edges']:
                 if edge['from_id'] == self.agent_id and edge['relation_type'] == 'CLOSE' and \
-                    id2node[edge['to_id']]['class_name'] in ['fridge', 'kitchencabinets', 'cabinet', 'microwave', 'dishwasher', 'stove'] and \
+                    id2node[edge['to_id']]['class_name'] in ['fridge', 'kitchencabinets', 'cabinet', 'microwave', 'dishwasher', 'stove', 'bathroomcabinet'] and \
                     'OPEN' in id2node[edge['to_id']]['states']:
                     self.last_opened = ['<{}>'.format(id2node[edge['to_id']]['class_name']), '({})'.format(edge['to_id'])]
                     
@@ -262,7 +262,7 @@ class MCTS:
             
             # print(actions)
 
-            if actions is None:
+            if actions is None or len(actions) == 0:
                 delta_reward = 0
             else:
                 num_steps += len(actions)
@@ -485,7 +485,6 @@ class MCTS:
         for predicate, count in unsatisfied.items():
             if count > 1 or count > 0 and predicate not in [opponent_predicate_1, opponent_predicate_2]:
                 elements = predicate.split('_')
-                # print(elements)
                 if elements[0] == 'on':
                     subgoal_type = 'put'
                     obj = elements[1]
