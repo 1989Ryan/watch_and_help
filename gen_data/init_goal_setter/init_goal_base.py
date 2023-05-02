@@ -103,10 +103,27 @@ class SetInitialGoal:
         elif self.task_name == 'put_dishwasher_prepare_snack':
             self.init_pool = copy.deepcopy(dict(self.rand.sample(list(self.init_pool_tasks["put_dishwasher"].items()), k=k1)))
             self.init_pool.update(dict(self.rand.sample(list(self.init_pool_tasks["prepare_snack"].items()), k=k2)))
-        
+        elif self.task_name == 'put_microwave_put_dishwasher':
+            self.init_pool = copy.deepcopy(dict(self.rand.sample(list(self.init_pool_tasks["put_microwave"].items()), k=k1)))
+            self.init_pool.update(dict(self.rand.sample(list(self.init_pool_tasks["put_dishwasher"].items()), k=k2)))       
         elif self.task_name == 'prepare_wash_put_fridge':
             self.init_pool = copy.deepcopy(dict(self.rand.sample(list(self.init_pool_tasks["prepare_wash"].items()), k=k1)))
             self.init_pool.update(dict(self.rand.sample(list(self.init_pool_tasks["put_fridge"].items()), k=k2)))
+        elif self.task_name == 'put_fridge_put_dishwasher':
+            self.init_pool = copy.deepcopy(dict(self.rand.sample(list(self.init_pool_tasks["put_fridge"].items()), k=k1)))
+            self.init_pool.update(dict(self.rand.sample(list(self.init_pool_tasks["put_dishwasher"].items()), k=k2)))
+        elif self.task_name == 'prepare_food_prepare_wash':
+            self.init_pool = copy.deepcopy(dict(self.rand.sample(list(self.init_pool_tasks["prepare_food"].items()), k=k1)))
+            self.init_pool.update(dict(self.rand.sample(list(self.init_pool_tasks["prepare_wash"].items()), k=k2)))
+        elif self.task_name == 'setup_table_prepare_wash':
+            self.init_pool = copy.deepcopy(dict(self.rand.sample(list(self.init_pool_tasks["setup_table"].items()), k=k1)))
+            self.init_pool.update(dict(self.rand.sample(list(self.init_pool_tasks["prepare_wash"].items()), k=k2)))
+
+
+
+
+
+
 
 
         ## make sure the goal is not empty

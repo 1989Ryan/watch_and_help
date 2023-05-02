@@ -80,7 +80,7 @@ class UnityEnvironment(BaseUnityEnvironment):
             # predicates_grab = {'holds_{}_1'.format(obj_gr): [1, False, 2] for obj_gr in object_grab}
             res_dict = {goal_k: [goal_c, True, 2] for goal_k, goal_c in task_spec.items()}
             # res_dict.update(predicates_grab)
-            print(res_dict)
+            # print(res_dict)
             return res_dict
         elif agent_goal == 'grab':
             candidates = [x.split('_')[1] for x,y in task_spec.items() if y > 0 and x.split('_')[0] in ['on', 'inside']]
@@ -111,7 +111,7 @@ class UnityEnvironment(BaseUnityEnvironment):
         self.init_graph = copy.deepcopy(env_task['init_graph'])
         self.init_rooms = env_task['init_rooms']
         self.task_goal = env_task['task_goal']
-        print(self.task_goal)
+        # print(self.task_goal)
 
         self.task_name = env_task['task_name']
 

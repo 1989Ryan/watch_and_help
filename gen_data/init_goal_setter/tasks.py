@@ -956,7 +956,7 @@ class Task:
         return graph, env_goal1, success
 
     @staticmethod
-    def prepare_food_put_dishwasher(init_goal_manager, graph):
+    def prepare_food_prepare_wash(init_goal_manager, graph):
         all_goal = init_goal_manager.goal
         init_goal_manager.goal = {obj_name: value for obj_name, value in all_goal.items() if
                                   obj_name in init_goal_manager.init_pool_tasks['prepare_food'].keys()}
@@ -964,8 +964,8 @@ class Task:
         if not success:
             return None, None, False
         init_goal_manager.goal = {obj_name: value for obj_name, value in all_goal.items() if
-                                  obj_name in init_goal_manager.init_pool_tasks['put_dishwasher'].keys()}
-        graph, env_goal2, success = Task.put_dishwasher(init_goal_manager, graph, start=False)
+                                  obj_name in init_goal_manager.init_pool_tasks['prepare_wash'].keys()}
+        graph, env_goal2, success = Task.prepare_wash(init_goal_manager, graph, start=False)
         init_goal_manager.goal = all_goal
 
         if not success:
@@ -984,6 +984,24 @@ class Task:
         init_goal_manager.goal = {obj_name: value for obj_name, value in all_goal.items() if
                                   obj_name in init_goal_manager.init_pool_tasks['put_bathroom_cabinet'].keys()}
         graph, env_goal2, success = Task.put_bathroom_cabinet(init_goal_manager, graph, start=False)
+        init_goal_manager.goal = all_goal
+
+        if not success:
+            return None, None, False
+        env_goal1.update(env_goal2)
+        return graph, env_goal1, success
+
+    @staticmethod
+    def put_microwave_put_dishwasher(init_goal_manager, graph):
+        all_goal = init_goal_manager.goal
+        init_goal_manager.goal = {obj_name: value for obj_name, value in all_goal.items() if
+                                  obj_name in init_goal_manager.init_pool_tasks['put_microwave'].keys()}
+        graph, env_goal1, success = Task.put_microwave(init_goal_manager, graph)
+        if not success:
+            return None, None, False
+        init_goal_manager.goal = {obj_name: value for obj_name, value in all_goal.items() if
+                                  obj_name in init_goal_manager.init_pool_tasks['put_dishwasher'].keys()}
+        graph, env_goal2, success = Task.put_dishwasher(init_goal_manager, graph, start=False)
         init_goal_manager.goal = all_goal
 
         if not success:
@@ -1028,16 +1046,16 @@ class Task:
         return graph, env_goal1, success
 
     @staticmethod
-    def prepare_wash_put_fridge(init_goal_manager, graph):
+    def setup_table_prepare_wash(init_goal_manager, graph):
         all_goal = init_goal_manager.goal
         init_goal_manager.goal = {obj_name: value for obj_name, value in all_goal.items() if
-                                  obj_name in init_goal_manager.init_pool_tasks['prepare_wash'].keys()}
-        graph, env_goal1, success = Task.prepare_wash(init_goal_manager, graph)
+                                  obj_name in init_goal_manager.init_pool_tasks['setup_table'].keys()}
+        graph, env_goal1, success = Task.setup_table(init_goal_manager, graph)
         if not success:
             return None, None, False
         init_goal_manager.goal = {obj_name: value for obj_name, value in all_goal.items() if
-                                  obj_name in init_goal_manager.init_pool_tasks['put_fridge'].keys()}
-        graph, env_goal2, success = Task.put_fridge(init_goal_manager, graph, start=False)
+                                  obj_name in init_goal_manager.init_pool_tasks['prepare_wash'].keys()}
+        graph, env_goal2, success = Task.prepare_wash(init_goal_manager, graph, start=False)
         init_goal_manager.goal = all_goal
 
         if not success:

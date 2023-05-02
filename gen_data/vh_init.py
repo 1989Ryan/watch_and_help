@@ -77,7 +77,7 @@ if __name__ == "__main__":
         "prepare_drinks", "prepare_snack", "prepare_wash", "prepare_food", "setup_table_prepare_food", 
         "setup_table_put_microwave", "setup_table_put_fridge", "setup_table_put_dishwasher", 
         "prepare_food_put_dishwasher", "put_fridge_put_bathroom_cabinet", "put_fridge_put_dishwasher", 
-        "put_dishwasher_prepare_snack", "prepare_wash_put_fridge", 
+        "put_dishwasher_prepare_snack", "prepare_wash_put_fridge", "put_fridge_put_bathroom_cabinet", "put_fridge_put_dishwasher", "prepare_food_prepare_wash", "setup_table_prepare_wash","put_microwave_put_dishwasher"
     ]
 
     # task_names = {1: ["setup_table", "clean_table", "put_fridge", "prepare_food", "put_microwave"],
@@ -102,18 +102,22 @@ if __name__ == "__main__":
 
     # apartment_ids = [int(apt_id) for apt_id in args.apt_str.split(',')]
     if args.unseen_apartment:
-        apartment_ids = [1, 6]
+        apartment_ids = [1]
     else:
         apartment_ids = [2, 3, 4]
     if args.task == 'all':
-        tasks = ["setup_table", "put_dishwasher", "put_microwave", "put_bathroom_cabinet", "put_fridge",
-        "prepare_drinks", "prepare_snack", "prepare_wash", "prepare_food","put_kitchencabinet"]
+        if args.unseen_item:
+            tasks = ["setup_table", "put_dishwasher", "put_microwave", "put_fridge", "prepare_food"]
+        else:
+            tasks = ["setup_table", "put_dishwasher", "put_microwave", "put_bathroom_cabinet", "put_fridge",
+                "prepare_snack", "prepare_wash", "prepare_food","put_kitchencabinet"]
         if args.mode == 'full':
-            tasks += ["setup_table_prepare_food", "setup_table_put_microwave", "setup_table_put_fridge", 
-        "setup_table_put_dishwasher", "prepare_food_put_dishwasher", ]
+            tasks += ["setup_table_prepare_food"]
     elif args.task == 'unseen_comp':
-        tasks = ["put_fridge_put_bathroom_cabinet", "put_fridge_put_dishwasher", 
-                 "put_dishwasher_prepare_snack", "prepare_wash_put_fridge"]
+        if args.unseen_item:
+            tasks = ["put_fridge_put_dishwasher", "put_microwave_put_dishwasher"]
+        else:
+            tasks = ["put_fridge_put_bathroom_cabinet","put_microwave_put_dishwasher", "put_fridge_put_dishwasher", "prepare_food_prepare_wash", "setup_table_prepare_wash"]
     else:
         tasks = [args.task]
     num_per_apartment = args.num_per_apartment
@@ -227,7 +231,7 @@ if __name__ == "__main__":
                                 if task_name in [ "setup_table_prepare_food", 
                                     "setup_table_put_microwave", "setup_table_put_fridge", "setup_table_put_dishwasher", 
                                     "prepare_food_put_dishwasher", "put_fridge_put_bathroom_cabinet", "put_fridge_put_dishwasher", 
-                                    "put_dishwasher_prepare_snack", "prepare_wash_put_fridge", ]:
+                                    "put_dishwasher_prepare_snack", "prepare_wash_put_fridge", "put_fridge_put_bathroom_cabinet", "put_fridge_put_dishwasher", "prepare_food_prepare_wash", "setup_table_prepare_wash", "put_microwave_put_dishwasher"]:
                                     names = task_name.split('_')
                                     names_ = [names[0] + '_' + names[1], names[2] + '_' + names[3]]
                                     for name in names_:
@@ -277,7 +281,7 @@ if __name__ == "__main__":
         if task_name in [ "setup_table_prepare_food", 
                                     "setup_table_put_microwave", "setup_table_put_fridge", "setup_table_put_dishwasher", 
                                     "prepare_food_put_dishwasher", "put_fridge_put_bathroom_cabinet", "put_fridge_put_dishwasher", 
-                                    "put_dishwasher_prepare_snack", "prepare_wash_put_fridge", ]:
+                                    "put_dishwasher_prepare_snack", "prepare_wash_put_fridge", "put_fridge_put_dishwasher", "prepare_food_prepare_wash", "setup_table_prepare_wash", "put_microwave_put_dishwasher"]:
             names = task_name.split('_')
             if len(names) == 4:
                 names_ = [names[0] + '_' + names[1], names[2] + '_' + names[3]]
@@ -306,7 +310,10 @@ if __name__ == "__main__":
         pickle.dump(env_task_set, open(f'./vh/dataset/env_task_set_{args.num_per_apartment}_{args.mode}.pik', 'wb'))
     else:
         if args.unseen_item:
-            pickle.dump(env_task_set, open(f'./vh/dataset/env_task_set_{args.num_per_apartment}_{args.mode}_unseen_item.pik', 'wb'))
+            if args.task == 'unseen_comp':
+                pickle.dump(env_task_set, open(f'./vh/dataset/env_task_set_{args.num_per_apartment}_{args.mode}_unseen_composition_unseen_item.pik', 'wb'))
+            else:
+                pickle.dump(env_task_set, open(f'./vh/dataset/env_task_set_{args.num_per_apartment}_{args.mode}_unseen_item.pik', 'wb'))
         elif args.unseen_apartment:
             pickle.dump(env_task_set, open(f'./vh/dataset/env_task_set_{args.num_per_apartment}_{args.mode}_unseen_apartment.pik', 'wb'))
         elif args.task == 'unseen_comp':

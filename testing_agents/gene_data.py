@@ -7,7 +7,7 @@ import random
 import numpy as np
 from pathlib import Path
 
-from vh.data_gene.envs.unity_environment import UnityEnvironment
+from vh.learned_policy.envs.unity_environment import UnityEnvironment
 from vh.data_gene.agents import MCTS_agent
 from vh.data_gene.arguments import get_args
 from vh.data_gene.algos.arena_mp2 import ArenaMP
@@ -100,13 +100,13 @@ if __name__ == '__main__':
                 "prepare_drinks", "prepare_snack", "prepare_wash", "prepare_food", "setup_table_prepare_food", 
                 "setup_table_put_microwave", "setup_table_put_fridge", "setup_table_put_dishwasher", 
                 "prepare_food_put_dishwasher", "put_fridge_put_bathroom_cabinet", "put_fridge_put_dishwasher", 
-                "put_dishwasher_prepare_snack", "prepare_wash_put_fridge", 
+                "put_dishwasher_prepare_snack", "prepare_wash_put_fridge",   "put_fridge_put_dishwasher", "prepare_food_prepare_wash", "setup_table_prepare_wash", "put_microwave_put_dishwasher"
             ]:
                 continue 
-            if os.path.isfile(curr_log_file_name):
-                with open(curr_log_file_name, 'rb') as fd:
-                    file_data = pickle.load(fd)
-                continue
+            # if os.path.isfile(curr_log_file_name):
+            #     with open(curr_log_file_name, 'rb') as fd:
+            #         file_data = pickle.load(fd)
+            #     continue
 
             print(env_task_set[episode_id]['task_name'])
             print('episode:', episode_id)
@@ -116,7 +116,6 @@ if __name__ == '__main__':
 
             
             try:
-                
                 arena.reset(episode_id)
                 success, steps, saved_info = arena.run()
                 print('-------------------------------------')
