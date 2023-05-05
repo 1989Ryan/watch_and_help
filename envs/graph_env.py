@@ -8,7 +8,6 @@ import sys
 
 curr_dir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(f'{curr_dir}/../../vh_sim/simulation/')
-
 from evolving_graph.utils import load_graph_dict, graph_dict_helper
 from evolving_graph.execution import ScriptExecutor, ExecutionInfo
 from evolving_graph.scripts import read_script_from_string
@@ -128,6 +127,7 @@ class VhGraphEnv():
             state = graph_env
 
         observable_state = self._mask_state(state, char_index) if self.pomdp else state
+        
         return observable_state
 
     def step(self, scripts):

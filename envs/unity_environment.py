@@ -11,6 +11,7 @@ import numpy as np
 import copy
 import ipdb
 
+import random
 class UnityEnvironment(BaseUnityEnvironment):
 
 
@@ -25,11 +26,11 @@ class UnityEnvironment(BaseUnityEnvironment):
                  port_id=0,
                  executable_args={},
                  recording_options={'recording': False, 
-                    'output_folder': None, 
-                    'file_name_prefix': None,
+                    'output_folder': 'test_mcts/', 
+                    'file_name_prefix': 'data',
                     'cameras': 'PERSON_FROM_BACK',
                     'modality': 'normal'},
-                 seed=123):
+                 seed=13):
 
         if agent_goals is not None:
             self.agent_goals = agent_goals
@@ -37,7 +38,8 @@ class UnityEnvironment(BaseUnityEnvironment):
             self.agent_goals = ['full' for _ in range(num_agents)]
         
         self.task_goal, self.goal_spec = {0: {}, 1: {}}, {0: {}, 1: {}}
-        self.env_task_set = env_task_set
+        # self.env_task_set = env_task_set
+        self.env_task_set = [task for task in env_task_set if 'setup_table' not in task['task_name'] and 'put_dishwasher' not in task['task_name']]
         super(UnityEnvironment, self).__init__(
             num_agents=num_agents,
             max_episode_length=max_episode_length,
@@ -49,6 +51,7 @@ class UnityEnvironment(BaseUnityEnvironment):
             recording_options=recording_options,
             seed=seed
             )
+        self.recording_options = recording_options
         self.full_graph = None
 
     
@@ -63,7 +66,6 @@ class UnityEnvironment(BaseUnityEnvironment):
             # How many predicates achieved
             value_pred = min(len(value), preds_needed)
             reward += value_pred * reward_per_pred
-
             if mandatory and unsatisfied[key] > 0:
                 done = False
 
@@ -104,6 +106,7 @@ class UnityEnvironment(BaseUnityEnvironment):
         # Make sure that characters are out of graph, and ids are ok
         # ipdb.set_trace()
         if task_id is None:
+            # task_id = random.choice(list(range(len(self.env_task_set))))
             task_id = self.rnd.choice(list(range(len(self.env_task_set))))
         env_task = self.env_task_set[task_id]
 
@@ -197,7 +200,7 @@ class UnityEnvironment(BaseUnityEnvironment):
                                                            skip_animation=False,
                                                            camera_mode=self.recording_options['cameras'],
                                                            file_name_prefix='task_{}'.format(self.task_id),
-                                                           image_synthesis=self.recording_optios['modality'])
+                                                           image_synthesis=self.recording_options['modality'])
             else:
                 success, message = self.comm.render_script(script_list,
                                                            recording=False,

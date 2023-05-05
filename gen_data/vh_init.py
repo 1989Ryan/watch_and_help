@@ -104,13 +104,15 @@ if __name__ == "__main__":
     if args.unseen_apartment:
         apartment_ids = [1]
     else:
-        apartment_ids = [2, 3, 4]
+        apartment_ids = [3]
     if args.task == 'all':
         if args.unseen_item:
             tasks = ["setup_table", "put_dishwasher", "put_microwave", "put_fridge", "prepare_food"]
         else:
             tasks = ["setup_table", "put_dishwasher", "put_microwave", "put_bathroom_cabinet", "put_fridge",
-                "prepare_snack", "prepare_wash", "prepare_food","put_kitchencabinet"]
+                "prepare_snack", "prepare_wash", "prepare_food",
+                # "put_kitchencabinet"
+                ]
         if args.mode == 'full':
             tasks += ["setup_table_prepare_food"]
     elif args.task == 'unseen_comp':
@@ -149,9 +151,9 @@ if __name__ == "__main__":
                 else:
                     positions = [pos for pos in pos_list if \
                                  pos[0] == 'INSIDE' and pos[1] in ['fridge', 'kitchencabinet', 'cabinet', 'microwave',
-                                                                   'dishwasher', 'stove'] or \
+                                                                   'dishwasher', 'stove', 'bathroomcabinet'] or \
                                  pos[0] == 'ON' and pos[1] in \
-                                 (['cabinet', 'coffeetable', 'bench'] + ([] if apartment == 2 else ['kitchentable']))]
+                                 (['cabinet', 'coffeetable', 'bench', 'kitchencounter', 'bathroomcounter'] + ([] if apartment == 2 else ['kitchentable']))]
                 obj_position[obj] = positions
             # print(obj_position['cutleryfork'])
 
@@ -197,7 +199,7 @@ if __name__ == "__main__":
                             print("Objects unplaced")
                             print([id2node[edge['to_id']]['class_name'] for edge in init_graph['edges'] if
                                    edge['from_id'] == obj_id])
-                            ipdb.set_trace()
+                            # ipdb.set_trace()
                         if task_name != 'read_book' and task_name != 'watch_tv':
                             intersection = set(obj_names) & set(goal_names)
                         else:

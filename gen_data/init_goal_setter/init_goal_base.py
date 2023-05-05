@@ -43,9 +43,9 @@ class SetInitialGoal:
 
 
     def set_goal(self):
-        k=1 if self.mode=='simple' else 3
-        k1 = random.choice([1, 2])
-        k2 = 3 - k1
+        k=1 if self.mode=='simple' else 2
+        k1 = 1
+        k2 = 1
         if self.task_name in ["setup_table", "put_dishwasher", "put_microwave", "put_bathroom_cabinet", "put_fridge", "put_kitchencabinet", 
         "prepare_drinks", "prepare_snack", "prepare_wash", "prepare_food"]:
             self.init_pool = dict(self.rand.sample(list(self.init_pool_tasks[self.task_name].items()), k=k))
@@ -166,10 +166,10 @@ class SetInitialGoal:
                 # if 2 <= count <= 6 and self.task_name not in ['clean_table', 'unload_dishwasher'] or 3 <= count <= 6:
                 #     break
                 if self.mode == "simple":
-                    if 2 >= count >= 1:
+                    if count == 1:
                         break
                 else:
-                    if 4 >= count >= 3:
+                    if count == 2:
                         break
 
     def get_obj_room(self, obj_id):
@@ -362,7 +362,6 @@ class SetInitialGoal:
 
         # if obj_name == 'cutleryknife':
         #     pdb.set_trace()
-
         candidates = [(obj_rel_name[0], obj_rel_name[1]) for obj_rel_name in self.obj_position[obj_name] if
                       obj_rel_name[1] in ids_class.keys()]
 

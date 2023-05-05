@@ -7,7 +7,7 @@ import random
 import numpy as np
 from pathlib import Path
 
-from vh.learned_policy.envs.unity_environment import UnityEnvironment
+from vh.data_gene.envs.unity_environment import UnityEnvironment
 from vh.data_gene.agents import MCTS_agent
 from vh.data_gene.arguments import get_args
 from vh.data_gene.algos.arena_mp2 import ArenaMP
@@ -20,15 +20,14 @@ from vh.data_gene.utils import utils_goals
 if __name__ == '__main__':
     args = get_args()
 
-    num_tries = 5
+    num_tries = 1
     args.max_episode_length = 50
-    args.num_per_apartment = 5
     # args.dataset_path = './vh/dataset/env_task_set_50_simple_train_seen_task_seen_env.pik'
     # args.mode = 'simple'
     env_task_set = pickle.load(open(args.dataset_path, 'rb'))
 
 
-    args.record_dir = f'./expert_actions/expert_{args.num_per_apartment}_{args.mode}'
+    args.record_dir = f'./expert_actions/expert_{args.mode}'
     if not os.path.exists(args.record_dir):
         os.makedirs(args.record_dir)
 

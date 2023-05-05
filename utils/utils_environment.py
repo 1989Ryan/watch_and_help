@@ -151,6 +151,7 @@ def check_progress(state, goal_spec):
                     satisfied[key].append(predicate)
                     unsatisfied[key] -= 1
             if elements[0] in ['on', 'inside']:
+                # print(edge)
                 if edge['relation_type'].lower() == elements[0] and edge['to_id'] == int(elements[2]) and (id2node[edge['from_id']]['class_name'] == elements[1] or str(edge['from_id']) == elements[1]):
                     predicate = '{}_{}_{}'.format(elements[0], edge['from_id'], elements[2])
                     satisfied[key].append(predicate)
