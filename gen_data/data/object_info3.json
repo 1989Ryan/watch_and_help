@@ -1079,8 +1079,12 @@
     ],
     "cereal": [
         [
-            "INSIDE",
+            "ON",
             "kitchencabinet"
+        ],
+        [
+            "ON",
+            "kitchencounter"
         ],
         [
             "ON",
@@ -1095,10 +1099,6 @@
         [
             "INSIDE",
             "fridge"
-        ],
-        [
-            "ON",
-            "kitchentable"
         ],
         [
             "ON",
@@ -1197,8 +1197,12 @@
     ],
     "chips": [
         [
-            "INSIDE",
+            "ON",
             "kitchencabinet"
+        ],
+        [
+            "ON",
+            "kitchencounter"
         ],
         [
             "ON",
@@ -1865,8 +1869,12 @@
     ],
     "crackers": [
         [
-            "INSIDE",
+            "ON",
             "kitchencabinet"
+        ],
+        [
+            "ON",
+            "kitchencounter"
         ],
         [
             "ON",
@@ -2069,20 +2077,20 @@
         [
             "ON",
             "kitchentable"
-        ],
-        [
-            "ON",
-            "kitchentable"
         ]
     ],
     "cutleryfork": [
         [
-            "INSIDE",
+            "ON",
             "kitchencabinet"
         ],
         [
             "ON",
-            "kitchentable"
+            "kitchencounter"
+        ],
+        [
+            "ON",
+            "kitchencounter"
         ],
         [
             "ON",
@@ -2091,12 +2099,16 @@
     ],
     "cutleryknife": [
         [
-            "INSIDE",
+            "ON",
             "kitchencabinet"
         ],
         [
             "ON",
-            "kitchentable"
+            "kitchencounter"
+        ],
+        [
+            "ON",
+            "kitchencounter"
         ],
         [
             "ON",
@@ -2265,8 +2277,12 @@
     ],
     "dishbowl": [
         [
-            "INSIDE",
+            "ON",
             "kitchencabinet"
+        ],
+        [
+            "ON",
+            "kitchencounter"
         ],
         [
             "ON",
@@ -3287,8 +3303,12 @@
     ],
     "milkshake": [
         [
-            "INSIDE",
+            "ON",
             "kitchencabinet"
+        ],
+        [
+            "ON",
+            "kitchencounter"
         ],
         [
             "INSIDE",
@@ -3693,10 +3713,6 @@
         [
             "ON",
             "kitchentable"
-        ],
-        [
-            "ON",
-            "kitchentable"
         ]
     ],
     "paper": [
@@ -3929,12 +3945,12 @@
     ],
     "plate": [
         [
-            "INSIDE",
+            "ON",
             "kitchencabinet"
         ],
         [
             "ON",
-            "kitchentable"
+            "kitchencounter"
         ],
         [
             "ON",
@@ -4039,10 +4055,6 @@
         [
             "INSIDE",
             "fridge"
-        ],
-        [
-            "ON",
-            "kitchentable"
         ],
         [
             "ON",
@@ -5073,12 +5085,16 @@
     ],
     "waterglass": [
         [
-            "INSIDE",
+            "ON",
             "kitchencabinet"
         ],
         [
             "ON",
-            "kitchentable"
+            "kitchencounter"
+        ],
+        [
+            "ON",
+            "kitchencounter"
         ],
         [
             "ON",
@@ -5191,12 +5207,16 @@
     ],
     "wineglass": [
         [
-            "INSIDE",
+            "ON",
             "kitchencabinet"
         ],
         [
             "ON",
-            "kitchentable"
+            "kitchencounter"
+        ],
+        [
+            "ON",
+            "kitchencounter"
         ],
         [
             "ON",

@@ -163,7 +163,16 @@ if __name__ == "__main__":
                 comm.reset(apartment)
                 s, original_graph = comm.environment_graph()
                 graph = copy.deepcopy(original_graph)
-
+                kitchencabinet_id = []
+                for node in original_graph['nodes']:
+                    if node['class_name'] == 'kitchencabinet':
+                        if len(kitchencabinet_id) == 0:
+                            kitchencabinet_id.append(node['id'])
+                        else:
+                            graph['nodes'].remove(node)
+                            for edge in graph['edges']:
+                                if edge['from_id'] == node['id'] or edge['to_id'] == node['id']:
+                                    graph['edges'].remove(edge)
                 task_name = task
 
                 print('------------------------------------------------------------------------------')
@@ -185,6 +194,7 @@ if __name__ == "__main__":
                     # print(env_goal)
 
                     if not success:
+                        print(message)
                         goal_objs = []
                         goal_names = []
                         for k, goals in env_goal.items():

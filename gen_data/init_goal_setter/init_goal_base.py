@@ -441,6 +441,8 @@ class SetInitialGoal:
                         continue
 
                 ## check if it is possible to put object in this surface
+                if obj_name == 'plate':
+                    print(target_id_name)
                 placeable = self.check_placeable(graph, target_id, obj_name)
 
                 # print(obj_name, id2node[target_id]['class_name'], placeable)

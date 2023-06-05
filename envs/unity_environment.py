@@ -38,8 +38,8 @@ class UnityEnvironment(BaseUnityEnvironment):
             self.agent_goals = ['full' for _ in range(num_agents)]
         
         self.task_goal, self.goal_spec = {0: {}, 1: {}}, {0: {}, 1: {}}
-        # self.env_task_set = env_task_set
-        self.env_task_set = [task for task in env_task_set if 'setup_table' not in task['task_name'] and 'put_dishwasher' not in task['task_name']]
+        self.env_task_set = env_task_set
+        # self.env_task_set = [task for task in env_task_set if 'setup_table' not in task['task_name'] and 'put_dishwasher' not in task['task_name']]
         super(UnityEnvironment, self).__init__(
             num_agents=num_agents,
             max_episode_length=max_episode_length,
@@ -228,7 +228,7 @@ class UnityEnvironment(BaseUnityEnvironment):
         info['failed_exec'] = failed_execution
         if self.steps == self.max_episode_length:
             done = True
-        return obs, reward, done, info
+        return obs, reward, done, info, success
 
 
     def get_observation(self, agent_id, obs_type, info={}):
