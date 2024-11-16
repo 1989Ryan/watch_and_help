@@ -228,7 +228,7 @@ class UnityEnvironment(BaseUnityEnvironment):
         info['failed_exec'] = failed_execution
         if self.steps == self.max_episode_length:
             done = True
-        return obs, reward, done, info, success
+        return obs, reward, done, info
 
 
     def get_observation(self, agent_id, obs_type, info={}):
